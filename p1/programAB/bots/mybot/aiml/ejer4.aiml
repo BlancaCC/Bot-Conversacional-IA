@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+<!-- Preguntamos si es comparñero-->
+<category> 
+<pattern> es <set>compi</set> compi </pattern>
+<template> Sí,<star/> es un companero</template>
+</category>
+
+<category> 
+<pattern> es * compi </pattern>
+<template> No,<star/> NO es un companero</template>
+</category>
+
+
+
+<!-- Color de pelo -->
+<category> 
+<pattern> Color pelo <set>compi</set> </pattern>
+<template>El colo de pelo de <star/> es <map name="pelo"><star/></map> </template>
+</category>
+
+
+<category> 
+<pattern> Color pelo * </pattern>
+<template>Noconozco a  <star/>, pero tiene nombre de tener el pelo verde </template>
+</category>
+
+
+<!-- Color de ojos -->
+<category> 
+<pattern> Color ojos <set>compi</set> </pattern>
+<template>El colo de ojos de <star/> es <map name="ojos"><star/></map> </template>
+</category>
+
+
+<category> 
+<pattern> Color ojos * </pattern>
+<template>Noconozco a  <star/>, pero tiene nombre de tener los ojos transparententes </template>
+</category>
+
+<!-- 
+
+<!- ->
+<category> 
+<pattern>  </pattern>
+<template> </template>
+</category>
+
+-->
+
+
+</aiml>

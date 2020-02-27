@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+<category>
+<!--     Saludos    --> 
+<pattern>Hola</pattern>
+<template> Holilla soso amigo</template>
+</category>
+
+<pattern>Hola * </pattern>
+<template> HOLAAAAAAA, <star index="2"/> es el mejor salud que me han dicho hasta el momento <star/> </template>
+</category>
+
+
+</aiml>
+

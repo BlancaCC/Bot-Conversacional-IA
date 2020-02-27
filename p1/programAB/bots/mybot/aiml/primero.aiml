@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+ <!--     Saludos    --> 
+<category>
+<pattern>Hola</pattern>
+<template> Holilla soso amigo</template>
+</category>
+
+
+<!-- Comodín captura una o más palabras -->
+<category>
+<pattern>Hola * </pattern>
+<template> HOLAAAAAAA <star/> es el mejor salud que me han dicho hasta el momento <star/> </template>
+</category>
+
+<!-- Comodín captura cero o más palabras tiene más prioridad que ^ -->
+
+<category> 
+<pattern>Buenas ^ </pattern>
+<template> Buenos y positivos días tenga usted</template>
+</category>
+
+<!-- Prioridades # (*) < _ (^) > literal > ^ > * -->
+
+<category> 
+<pattern> * y * </pattern>
+<template> No sabía que <star index="2"/> y <star index="1"/> Fueran pareja :O</template>
+</category>
+
+
+
+<!-- uso de las propiedades del bot
+
+añadirlas en bots/mybots/config/properties.txt  -->
+
+<category> 
+<pattern> Cual es tu edad </pattern>
+<template> tengo <bot name="age"/>
+anos</template>
+</category>
+
+<!--variuables globales declaración NAME -->
+
+<category> 
+<pattern>^ me llamo *  </pattern>
+<template>
+  <set name="nombre"><star index="2"/></set>
+  <get name="nombre"/> es un bonito nombre  
+</template>
+</category>
+
+<!--variuables globales declaración locales VAR -->
+
+<category> 
+<pattern> mi color favorito es el  *  </pattern>
+<template>
+  <set var="color"><star/></set>
+  <get var="color"/>  es el color de mis ojos ;)
+</template>
+</category>
+
+
+<!-- THINK PARA evitar eco -->
+
+<category> 
+<pattern> color favorito *  </pattern>
+<template>
+  <think><set var="color"><star/></set>   </think>
+  <get var="color"/>  es el color de mis ojos2222 ;)
+</template>
+</category>
+
+
+
+<!-- SRAI para cosas que ya hemos hecho -->
+<category> 
+<pattern> que pasa</pattern>
+<template><srai>HOLA</srai></template>
+</category>
+
+
+
+<!-- 
+
+<!- ->
+<category> 
+<pattern>  </pattern>
+<template> </template>
+</category>
+
+-->
+
+</aiml>
+

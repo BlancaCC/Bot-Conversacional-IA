@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+<!-- CONTEXTO -->
+<category> 
+<pattern> ^ cafe ^ </pattern>
+<template> te gusta el cafe </template>
+</category>
+
+
+<category> 
+  <pattern>Si </pattern>
+  <that>TE GUSTA EL CAFE</that>
+<template> lo prefieres solo o con leche</template>
+</category>
+
+<category> 
+  <pattern>* </pattern>
+  <that>TE GUSTA EL CAFE</that>
+<template> Yo la verdad es que soy mas de te</template>
+</category>
+
+
+<!--VARIABLES GLOBALES  -->
+<!-- activo ese tópico --> 
+<category> 
+<pattern>^ te ^</pattern>
+<template> te gusta el <set name="topic"> te </set> </template>
+</category>
+
+
+<!-- bloque de definicionees con el topic -->
+<topic name="te">
+  <category> 
+    <pattern>  ^ si ^ </pattern>
+    <template> AAAAAAA YA TENEMOS ALGO EN COMuN </template>
+  </category>
+
+  <category> 
+    <pattern> hola </pattern>
+    <template>
+      <random>
+	<li> No me he quedado dormido, lo prometo, no necesito un te</li>
+	<li> h o l a aaa</li>
+	<li>Estoy to bien tuxs </li>
+      </random>
+    </template>
+  </category>
+
+  <category> 
+    <pattern> adios </pattern>
+    <template> Espera puedo cambiar, ya te dejo de hablar de te
+    <think><set name="topic"> unkown </set>   </think>
+    </template>
+  </category>
+  
+</topic>
+
+
+<!-- Ciclos --> 
+
+<category> 
+  <pattern> Cuenta hasta <set>number</set> </pattern>
+  <template>
+    <!-- Declaramos variables auxiliares-->
+    <think>
+      <set var="contador">1</set> <!-- almacena los distintos niveles -->
+      <set var="salida">1</set>   <!-- almacena cadena con lo dicho -->
+    </think>
+
+    <condition var="contador">
+      <li> <value><star/></value><get var="salida"/> </li>
+      <li>
+	<think>
+	  <set var="contador">
+	    <map name="successor"><get var="contador"/></map>
+	  </set>
+
+	  <set var="salida"><get var="salida"/> <get var="contador"/></set>
+	</think>
+	<loop/>
+	
+      </li>
+    </condition>
+  </template>
+</category>
+
+<!-- ->
+<category> 
+<pattern>  </pattern>
+<template> </template>
+</category>
+
+-->
+
+</aiml>
+
