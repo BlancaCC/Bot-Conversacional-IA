@@ -1,0 +1,33 @@
+
+  <category>
+    <pattern>DIME <set>number</set></pattern>
+    <template>
+      umm... a ver...
+      
+      
+      <think>
+	<set var="contador">1</set>
+      </think>
+
+      <condition var="contador">
+	<!-- ya se ha alcanzado tal núemro de dectos -->
+	<li><value><start/></value> <get var="contador"/>:<map name="Nivel0Virtudes"><get var="contador"/></map>
+	</li>
+	<li> <!-- avanzamos en una la cuenta -->
+	 <!-- 
+	      <get var="contador"/>::<map name="Nivel0Virtudes"><get var="contador"/></map> 
+-->
+	  <think> 
+	    <set var="contador">
+	      <map name="successor"><get var="contador"/></map>
+	    </set>
+	    
+	 </think>
+	 <loop/>
+	 
+	</li>
+	
+	</condition>
+    </template>
+  </category>
+  

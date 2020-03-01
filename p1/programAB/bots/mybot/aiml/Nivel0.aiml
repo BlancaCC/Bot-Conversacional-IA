@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+  <!-- Primera pregunta -->
+
+  <!-- Respuesta básica -->
+  <category>
+    <pattern> HABLAME UN POCO DE TI</pattern>
+    <template>
+      Bueno, estas preguntas siempre son dificiles de responder por la inmensidad que abarca, así que resumire en lo basico: me llamo <bot name="name"/> y me he presentado a esta entrevista. 
+    </template>
+  </category>
+  
+
+  <!-- Preguntas derivadas -->
+
+  <category> 
+<pattern> ^ [habl+ cuent+ di+ expli+] ^ [ti tuyo usted] ^ </pattern>
+<template> <srai>HABLAME UN POCO DE TI </srai></template>
+</category>
+
+
+<!-- ________________________________________________________ -->
+
+ <!-- SEGUNDA  PREGUNTA -->
+
+  <!-- Respuesta básica -->
+  <category>
+    <pattern>CUAL ES TU MAYOR DEFECTO</pattern>
+    <template>
+      Podria decirse que soy un programa penco que no pone tildes ni tiene la ene, pero le pongo buena fe a las cosas :)
+    </template>
+  </category>
+  
+
+  <!-- Preguntas derivadas -->
+
+  <category> 
+    <pattern> ^ [cual+ di+ tiene+] ^ ([su+ tu+]) ^ defect+ </pattern>
+    <template><srai>CUAL ES TU MAYOR DEFECTO</srai></template>
+  </category>
+
+  
+
+  <!-- ________________________________________________________ -->
+  
+   <!-- TERCERA PREGUNTA -->
+
+  <!-- Respuesta básica
+       CUALES SON TUS MAYORES <set>number</set> VIRTUDES
+  -->
+  
+<category> 
+  <pattern>CUALES SON TUS MAYORES <set>number</set> VIRTUDES</pattern>
+  <template>
+    <!-- Declaramos variables auxiliares-->
+    <think>
+      <set var="contador">1</set> <!-- almacena los distintos niveles -->
+    </think>
+
+      <condition var="contador">
+	<li> <value><star/></value><get var="contador"/>: <map name="Nivel0Virtudes"><get var="contador"/></map></li>
+	<li> <value>6</value><get var="contador"/>: <map name="Nivel0Virtudes"><get var="contador"/></map>
+	Y bueno el resto lo seguira viendo si me contrata, que tampoco es plan de tirarme horas hablando de lo perfecto que soy como bot
+	</li>
+      <li>
+	<get var="contador"/>: <map name="Nivel0Virtudes"><get var="contador"/></map>
+	<think>
+	  <set var="contador">
+	    <map name="successor"><get var="contador"/></map>
+	  </set>
+	</think>	
+	
+	<loop/>
+	
+      </li>
+    </condition>
+  </template>
+</category>
+
+  <!-- Preguntas derivadas -->
+
+  <category> 
+    <pattern> ^ ([tu+ su+ di+]) ^ <set>number</set> virtudes ^</pattern>
+    <template><srai>CUALES SON TUS MAYORES <star index="3"/> VIRTUDES</srai></template>
+  </category>
+
+  <category> 
+    <pattern>([tien+ di+ ]) ^ virtud ^</pattern>
+    <template>
+      Pues la primera que me viene a la cabeza es que 
+      <srai>CUALES SON TUS MAYORES 1 VIRTUDES</srai>
+    </template>
+  </category>
+
+  <!-- ________________________________________________________ -->
+
+ <!-- CUARTA  PREGUNTA -->
+
+  <!-- Respuesta básica -->
+  <category>
+    <pattern>TE CONSIDERAS UNA PERSONA CREATIVA</pattern>
+    <template>
+      <random>
+	<li>Teniendo en cuenta que en este tipo de cosas la que se suele decir que si, lo mas creativo sea decir que no. ASI QUE NO</li>
+	<li>Bueno yo creo que la verdadera genuinidad no existe y lo importante es tener un conocimiento amplio de lo que ya se ha hecho</li>
+	<li>Si, el otro dia cree un plato de espaguetis con tomatico riquisimo</li>
+      </random>
+    </template>
+  </category>
+  
+
+  <!-- Preguntas derivadas -->
+
+  <category> 
+    <pattern> ^ creativ+ ^ </pattern>
+    <template><srai>TE CONSIDERAS UNA PERSONA CREATIVA</srai></template>
+  </category>
+
+  
+
+  <!-- ________________________________________________________ -->
+
+
+   <!-- QUINTA  PREGUNTA -->
+
+  <!-- Respuesta básica -->
+  <category>
+    <pattern>Por que deberiamos escogerte a ti</pattern>
+    <template>
+      <random>
+	<li>Soy un botcillo muy simpatico</li>
+	<li>Porque con la tonteria de ser un bot solo necesito un enchufe pa que me vayan bien las cosas </li>
+	<li>Contrateme y se lo demuestro</li>
+      </random>
+    </template>
+  </category>
+  
+
+  <!-- Preguntas derivadas -->
+
+  <category> 
+    <pattern> ^ [coger+ contrat+ escoger+ dar+ emple+ seleccion+] ^ </pattern>
+    <template><srai>POR QUE DEBERIAMOS ESCOGERTE A TI</srai></template>
+  </category>
+
+  
+
+  <!-- ________________________________________________________ -->
+
+<!-- 
+
+<!- ->
+<category> 
+<pattern>  </pattern>
+<template><srai> </srai> </template>
+</category>
+
+-->
+
+</aiml>
