@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+<!-- Tareas pendientes para la práctica: 
+- Ya dice la horas libres, que recuerde por dónde va para la respuesta del cliente <set name="HORAS_DISPONBLES"> es la variable global que las contiene
+ -->
+<category> 
+<pattern>cita * </pattern>
+<template>
+  <think>
+  <!-- Pasa a una lista una fecha concreta con formato 10-12-20 -->
+  <set var="horas"><map name="eventos"><star/></map></set>
+
+  Estas son las horas de trabajo libre:
+
+<!-- Falla el sublist por algún motivo -->  
+  <set var="horaTrabajo">
+    <srai> SUBLIST FROM 9 TO 21 OF <get var="horas"/> </srai>
+  </set>
+    <!-- Busca si hay alguna libre 26-02-20 y 27 ocupadas -->
+  <set var="pos">
+    <srai>FINDITEM ocupado IN  <get var="horaTrabajo"/></srai>
+  </set>
+
+
+  </think>
+  <condition var="pos">
+    <li value="0"> Pues esta todo acupado, lo siento desea otro dia
+    </li>
+    <li>  Parece que hay hueco para ese dia
+    <srai>indice ocupado en <get var="horaTrabajo"/></srai>
+    </li>
+  </condition>
+  
+</template>
+</category>
+
+<!-- Funciones auxiliares -->
+
+<!-- Lista con posiciones del segundo elemento -->
+<category> 
+  <pattern>indice * en *</pattern>
+  
+  <template>
+    <think>
+    valor de la lista: 
+    <set var="lista"><star index="2"/></set>
+    <set var="listaHoras">8:00 9:00 10:00 11:00 12:00 13:00 14:00 15:00 16:00 17:00 18:00 19:00 20:00</set>
+    <set var="numeroIncidencias">1</set>
+      
+
+    Guardamos el caso inicial en un indice, sabemos que existe, su valor es:
+    <set var="pos"> 
+	  <srai>FINDITEM <star index="1"/> IN <get var="lista"/></srai>
+    </set>
+    
+    <set var="salida">
+      <srai>SELECTITEM <get var="pos"/> IN <get var="listaHoras"/></srai>
+    </set>
+    Eliminamos el caso anterior de la lista y su hora asociada
+    <set var="lista">
+      <srai> SUBLIST FROM <map name="successor"><get var="pos"/></map> TO 24 OF <get var="lista"/></srai>
+    </set>
+    <set var="listaHoras">
+      <srai> SUBLIST FROM <map name="successor"><get var="pos"/></map> TO 24 OF <get var="listaHoras"/></srai>
+    </set>
+    <set var="pos">
+      <srai>FINDITEM <star index="1"/> IN  <get var="lista"/></srai>
+    </set>
+
+    </think>
+
+  <condition var="pos">
+    <li value="0">
+      Las horas disponibles son: <set name="HORAS_DISPONBLES"><get var="salida"/></set></li>
+    <li>
+      <think>
+      Quedan indices por buscar
+      Anadimos el nuevo a la lista
+      <set var="nuevaHora">
+	<srai>SELECTITEM <get var="pos"/> IN <get var="listaHoras"/></srai>
+      </set>
+     
+      <set var="salida">
+	<srai>
+	  ADDITEM <get var="nuevaHora"/> IN <get var="salida"/>
+	</srai>
+      </set>
+      Eliminamos el caso anterior de la lista y su hora asociada
+      <set var="lista">
+	<srai> SUBLIST FROM <map name="successor"><get var="pos"/></map> TO 24 OF <get var="lista"/></srai>
+      </set>
+      <set var="listaHoras">
+	<srai> SUBLIST FROM <map name="successor"><get var="pos"/></map> TO 24 OF <get var="listaHoras"/></srai>
+      </set>
+      <set var="pos">
+	<srai>FINDITEM <star index="1"/> IN  <get var="lista"/></srai>
+      </set>
+      <set var="numeroIncidencias">
+	<map name="successor"><get var="numeroIncidencias"/></map>
+      </set>
+      </think>
+      <loop/>
+    </li>
+  </condition>
+  
+  </template>
+</category>
+
+
+
+
+</aiml>
+

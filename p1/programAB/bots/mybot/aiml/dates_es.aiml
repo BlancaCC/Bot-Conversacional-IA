@@ -22,7 +22,7 @@
 <category><pattern>SEASON</pattern>
 <template>
 <think><set var="month"><date format="%B" jformat="MMMMMMMMM"/></set></think>
-<set name="estacion"> <map name="season_ES"><get var="month"/></map></set>
+<set name="estacion"> <map name="season_es"><get var="month"/></map></set>
 </template>
 </category>
 
