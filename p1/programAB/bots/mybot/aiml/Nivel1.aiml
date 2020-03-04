@@ -3,6 +3,7 @@
 
 <!-- Tareas pendientes para la práctica: 
 - Ya dice la horas libres, que recuerde por dónde va para la respuesta del cliente <set name="HORAS_DISPONBLES"> es la variable global que las contiene
+<set name=FECHA> fecha en la que se está trabajando
  -->
 <category> 
 <pattern>cita * </pattern>
@@ -10,7 +11,8 @@
   <think>
   <!-- Pasa a una lista una fecha concreta con formato 10-12-20 -->
   <set var="horas"><map name="eventos"><star/></map></set>
-
+  <set name="FECHA"><star/></set>
+  
   Estas son las horas de trabajo libre:
 
 <!-- Falla el sublist por algún motivo -->  
@@ -19,7 +21,7 @@
   </set>
     <!-- Busca si hay alguna libre 26-02-20 y 27 ocupadas -->
   <set var="pos">
-    <srai>FINDITEM ocupado IN  <get var="horaTrabajo"/></srai>
+    <srai>FINDITEM null IN  <get var="horaTrabajo"/></srai>
   </set>
 
 
@@ -28,7 +30,11 @@
     <li value="0"> Pues esta todo acupado, lo siento desea otro dia
     </li>
     <li>  Parece que hay hueco para ese dia
-    <srai>indice ocupado en <get var="horaTrabajo"/></srai>
+    <srai>INDICE null EN <get var="horaTrabajo"/></srai>
+    <think>
+      indicamos que se espera que se diga algo sobre las horas mencionamos
+      <set name="topic">RESPUESTA_HORAS</set>
+    </think>
     </li>
   </condition>
   
@@ -45,7 +51,7 @@
     <think>
     valor de la lista: 
     <set var="lista"><star index="2"/></set>
-    <set var="listaHoras">8:00 9:00 10:00 11:00 12:00 13:00 14:00 15:00 16:00 17:00 18:00 19:00 20:00</set>
+    <set var="listaHoras">08:00 09:00 10:00 11:00 12:00 13:00 14:00 15:00 16:00 17:00 18:00 19:00 20:00</set>
     <set var="numeroIncidencias">1</set>
       
 
@@ -108,6 +114,37 @@
 </category>
 
 
+
+
+<!-- RESPUESTAS POSIBLES TRAS DECIR LAS HORAS topic "RESPUESTA HORAS" -->
+<topic name="RESPUESTA_HORAS">
+  <category> 
+    <pattern>HORA <set>hora_simple</set></pattern>
+    <template>
+      Comprobamos si esa hora esta definida en nuetra lista
+
+      <set var="pos"> 
+	  <srai>FINDITEM <star/>:00 IN <get name="HORAS_DISPONBLES"/></srai>
+      </set>
+      <condition var="pos">
+	<li value="0">Lo siento, esa hora no esta libre, las disponibles son <get name="HORAS_DISPONBLES"/></li>
+	<li>
+	  Muy bien, procedo a reservarle la hora
+
+	  <srai>MARK OCUPADO AT <star/>:00 ON <get name="FECHA"/></srai>
+	  
+	  <set name="topic">null</set>
+	  
+	</li>
+      </condition>
+    
+
+      
+    </template>
+  </category>
+
+  
+</topic>
 
 
 </aiml>
