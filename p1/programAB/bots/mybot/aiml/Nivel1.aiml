@@ -2,35 +2,75 @@
 <aiml version="2.0">
 
 <!-- Tareas pendientes para la práctica: 
-- Ya dice la horas libres, que recuerde por dónde va para la respuesta del cliente <set name="HORAS_DISPONBLES"> es la variable global que las contiene
-<set name=FECHA> fecha en la que se está trabajando
- -->
+Que mantenga una conversación normal 
+
+Las funciones ya creadas  a utilizar son 
+CITA dd-mm-yy [tarde dia manana]
+hora hh
+-->
+<!-- fUNCIONES PARA CONVERSAR DEL BOT-->
+<!-- PEDIR CITA UN DÍA CONCRETO -->
+
+<category> <!-- _ cita _ [01-31] mes _-->
+<pattern> ^ cita ^ <set>dias_validos_mes</set> ^ <set>month_es</set> </pattern>
+<template>
+  <think><var name="MES_PREGUNTADO"><star index="5"/></var></think>
+  <srai> cita <star index="3"/>-<map name="month_index_ES"><star index="5"/></map>-20 dia </srai>
+</template>
+</category>
+
+<category> <!-- _ cita _ [1-9] mes _ -->
+<pattern> ^ cita ^ <set>dias_sin_cero_delante</set> ^ <set>month_es</set> </pattern>
+<template>
+  <think><var name="MES_PREGUNTADO"><star index="5"/></var></think>
+  <srai> cita 0<star index="3"/>-<map name="month_index_ES"><star index="5"/></map>-20 dia </srai>
+</template>
+</category>
+
+<!-- El dia preguntado no tenia horas disponibles -->
+<topic name="OTRO_DIA">
+<category> <!-- se asume mismo mes -->
+<pattern> ^ <set>dias_sin_cero_delante</set> ^ </pattern>
+<template>
+  <think><var name="MES_PREGUNTADO"><star index="5"/></var></think>
+  <srai> cita 0<star index="3"/>-<map name="month_index_ES"><get name="MES_PREGUNTADO"/></map>-20 dia </srai>
+</template>
+</category>
+</topic>
+
+
+
+<!-- FUNCIONES BÁSICAS ESENCIALES -->
 <category> 
-<pattern>cita * </pattern>
+<pattern>CITA * <set>turnos_posibles</set></pattern>
 <template>
   <think>
   <!-- Pasa a una lista una fecha concreta con formato 10-12-20 -->
-  <set var="horas"><map name="eventos"><star/></map></set>
-  <set name="FECHA"><star/></set>
-  
-  Estas son las horas de trabajo libre:
+  <set name="FECHA"><star index="1"/></set>
+  <set var="horas"><srai> LIST OF DAY <get name="FECHA"/></srai></set>
 
-<!-- Falla el sublist por algún motivo -->  
+  Rango de horas preguntado, es decir si manana tarde o indiferente
+  <set name="turno"><star index="2"/></set>
+
+  Estas son las horas de trabajo:
+
   <set var="horaTrabajo">
-    <srai> SUBLIST FROM 9 TO 21 OF <get var="horas"/> </srai>
+    <srai> SUBLIST FROM <map name="horas">inicio_<get name="turno"/></map> TO <map name="horas">fin_<get name="turno"/></map> OF <get var="horas"/> </srai>
   </set>
-    <!-- Busca si hay alguna libre 26-02-20 y 27 ocupadas -->
+
   <set var="pos">
     <srai>FINDITEM null IN  <get var="horaTrabajo"/></srai>
   </set>
 
-
   </think>
+
   <condition var="pos">
-    <li value="0"> Pues esta todo acupado, lo siento desea otro dia
+    <li value="0"> Pues esta todo acupado, lo siento. ¿Desea otro dia?
+    <think>
+      <set name="topic">OTRO_DIA</set>
+    </think>
     </li>
-    <li>  Parece que hay hueco para ese dia
-    <srai>INDICE null EN <get var="horaTrabajo"/></srai>
+    <li>  Parece que hay hueco para ese dia a las <srai>INDICE null EN <get var="horaTrabajo"/></srai>
     <think>
       indicamos que se espera que se diga algo sobre las horas mencionamos
       <set name="topic">RESPUESTA_HORAS</set>
@@ -45,16 +85,17 @@
 
 <!-- Lista con posiciones del segundo elemento -->
 <category> 
-  <pattern>indice * en *</pattern>
-  
+  <pattern>INDICE * EN * </pattern>
   <template>
     <think>
     valor de la lista: 
     <set var="lista"><star index="2"/></set>
-    <set var="listaHoras">08:00 09:00 10:00 11:00 12:00 13:00 14:00 15:00 16:00 17:00 18:00 19:00 20:00</set>
+    <map name="horas"><get name="turno"/></map>
+    <set var="listaHoras">
+      <map name="horas"><get name="turno"/></map>
+    </set>
+    
     <set var="numeroIncidencias">1</set>
-      
-
     Guardamos el caso inicial en un indice, sabemos que existe, su valor es:
     <set var="pos"> 
 	  <srai>FINDITEM <star index="1"/> IN <get var="lista"/></srai>
@@ -74,11 +115,11 @@
       <srai>FINDITEM <star index="1"/> IN  <get var="lista"/></srai>
     </set>
 
-    </think>
+    </think>  
 
   <condition var="pos">
-    <li value="0">
-      Las horas disponibles son: <set name="HORAS_DISPONBLES"><get var="salida"/></set></li>
+    <li value="0"> <!-- No se ha encontrado ninguna otra disponible así que se entrega -->
+      <set name="HORAS_DISPONBLES"><get var="salida"/></set></li>
     <li>
       <think>
       Quedan indices por buscar
@@ -94,10 +135,10 @@
       </set>
       Eliminamos el caso anterior de la lista y su hora asociada
       <set var="lista">
-	<srai> SUBLIST FROM <map name="successor"><get var="pos"/></map> TO 24 OF <get var="lista"/></srai>
+	<srai> SUBLIST FROM <map name="successor"><get var="pos"/></map> TO 12 OF <get var="lista"/></srai>
       </set>
       <set var="listaHoras">
-	<srai> SUBLIST FROM <map name="successor"><get var="pos"/></map> TO 24 OF <get var="listaHoras"/></srai>
+	<srai> SUBLIST FROM <map name="successor"><get var="pos"/></map> TO 12 OF <get var="listaHoras"/></srai>
       </set>
       <set var="pos">
 	<srai>FINDITEM <star index="1"/> IN  <get var="lista"/></srai>
@@ -121,24 +162,26 @@
   <category> 
     <pattern>HORA <set>hora_simple</set></pattern>
     <template>
+      <think>
       Comprobamos si esa hora esta definida en nuetra lista
 
       <set var="pos"> 
-	  <srai>FINDITEM <star/>:00 IN <get name="HORAS_DISPONBLES"/></srai>
+	  <srai>FINDITEM <star/> IN <get name="HORAS_DISPONBLES"/></srai>
       </set>
+      </think>
+      
       <condition var="pos">
-	<li value="0">Lo siento, esa hora no esta libre, las disponibles son <get name="HORAS_DISPONBLES"/></li>
+	<li value="0">Lo siento, esa hora <star/> no esta libre, las disponibles son <get name="HORAS_DISPONBLES"/></li>
 	<li>
 	  Muy bien, procedo a reservarle la hora
-
+	 <think>
 	  <srai>MARK OCUPADO AT <star/>:00 ON <get name="FECHA"/></srai>
 	  
 	  <set name="topic">null</set>
-	  
+	 </think> 
 	</li>
       </condition>
     
-
       
     </template>
   </category>

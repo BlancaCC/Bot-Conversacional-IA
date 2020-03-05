@@ -1,0 +1,6 @@
+0,ES <SET>COMPI</SET> COMPI,*,*,Sí#Comma<star/> es un companero,ejer4.aiml
+0,ES * COMPI,*,*,No#Comma<star/> NO es un companero,ejer4.aiml
+0,COLOR PELO <SET>COMPI</SET>,*,*,El colo de pelo de <star/> es <map name="pelo"><star/></map>,ejer4.aiml
+0,COLOR PELO *,*,*,Noconozco a  <star/>#Comma pero tiene nombre de tener el pelo verde,ejer4.aiml
+0,COLOR OJOS <SET>COMPI</SET>,*,*,El colo de ojos de <star/> es <map name="ojos"><star/></map>,ejer4.aiml
+0,COLOR OJOS *,*,*,Noconozco a  <star/>#Comma pero tiene nombre de tener los ojos transparententes,ejer4.aiml
