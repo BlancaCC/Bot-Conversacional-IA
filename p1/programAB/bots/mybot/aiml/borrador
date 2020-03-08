@@ -1,4 +1,159 @@
 
 
     
-  
+
+
+<!-- FUNCIONES ELEMENTALES para coger la hora  -->
+<!-- Hora simple o compuesta 
+ <pattern> ^ <set>hora_simple</set>(:00) ^  </pattern>
+ -->
+<topic name="RESPUESTA_HORAS">
+  <category>    
+   <pattern> ^ <set>hora_simple</set> ^</pattern>
+    <template>   
+      <srai>HORA <star index="2"/></srai>
+    </template>    
+  </category>
+</topic>
+
+
+<!-- fUNCIONES PARA CONVERSAR DEL BOT-->
+<!-- PEDIR CITA UN DÍA CONCRETO -->
+
+
+ <!-- Patron de la pregunta _ cita _ [01-31] mes tarde/mañana -->
+<category>
+<pattern>$ * cita * <set>dias_validos_mes</set> * <set>month_es</set> * <set>turnos_posibles</set> * </pattern>
+<template>
+  Se ha introducido a pedir cita en una hora concreta por la tarde
+  <think><set name="MES_PREGUNTADO"><star index="5"/></set></think>
+  <srai> cita <star index="3"/>-<map name="month_index_ES"><star index="5"/></map>-20 <star index="7"/> </srai>
+</template>
+</category>
+ <!-- Patron de la pregunta _ cita _ [01-31] mes _-->
+<category>
+<pattern> ^ cita ^ <set>dias_validos_mes</set> ^ <set>month_es</set> ^ </pattern>
+<template>
+  <think><set name="MES_PREGUNTADO"><star index="5"/></set></think>
+  <srai> cita <star index="3"/>-<map name="month_index_ES"><star index="5"/></map>-20 dia </srai>
+</template>
+</category>
+
+<!--  Patron de la pregunta_ cita _ [1-9] mes -->
+<category> 
+<pattern> ^ cita ^ <set>dias_sin_cero_delante</set> ^ <set>month_es</set> ^ </pattern>
+<template>
+  <think><var name="MES_PREGUNTADO"><star index="5"/></var></think>
+  <srai> cita 0<star index="3"/>-<map name="month_index_ES"><star index="5"/></map>-20 dia </srai>
+</template>
+</category>
+
+<!-- El dia preguntado no tenia horas disponibles (se omite la palabra cita por el contacto)  -->
+<topic name="OTRO_DIA">
+ 
+  <!-- se asume mismo mes por tanto ante preguntas sin mes respondería -->
+<category> 
+<pattern> ^ <set>dias_sin_cero_delante</set> ^ </pattern>
+<template>
+  <srai> cita 0<star index="3"/>-<map name="month_index_ES"><get name="MES_PREGUNTADO"/></map>-20 dia </srai>
+</template>
+</category>
+
+<category>
+<pattern> ^ <set>dias_validos_mes</set> ^</pattern>
+<template>
+  <srai> cita <star index="2"/>-<map name="month_index_ES"><get name="MES_PREGUNTADO"/></map>-20 dia </srai>
+</template>
+</category>
+
+<!-- Si se mete el mes cuando se realice la pregunta -->
+
+<category>
+<pattern> ^ <set>dias_validos_mes</set> ^ <set>month_es</set> </pattern>
+<template>
+  <think><set name="MES_PREGUNTADO"><star index="5"/></set></think>
+  <srai> cita <star index="2"/>-<map name="month_index_ES"><star index="5"/></map>-20 dia </srai>
+</template>
+</category>
+
+<!-- Patron de la pregunta_ cita _ [1-9] mes _ -->
+<category> 
+<pattern>^ <set>dias_sin_cero_delante</set> ^ <set>month_es</set> </pattern>
+<template>
+  <think><var name="MES_PREGUNTADO"><star index="5"/></var></think>
+  <srai> cita 0<star index="2"/>-<map name="month_index_ES"><star index="5"/></map>-20 dia </srai>
+</template>
+</category>
+
+</topic>
+
+
+<!-- fUNCIONES PARA CONVERSAR DEL BOT-->
+<!-- PEDIR CITA UN DÍA CONCRETO -->
+
+
+ <!-- Patron de la pregunta _ cita _ [01-31] mes tarde/mañana -->
+<category>
+<pattern>$ * cita * <set>dias_validos_mes</set> * <set>month_es</set> * <set>turnos_posibles</set> * </pattern>
+<template>
+  Se ha introducido a pedir cita en una hora concreta por la tarde
+  <think><set name="MES_PREGUNTADO"><star index="5"/></set></think>
+  <srai> cita <star index="3"/>-<map name="month_index_ES"><star index="5"/></map>-20 <star index="7"/> </srai>
+</template>
+</category>
+ <!-- Patron de la pregunta _ cita _ [01-31] mes _-->
+<category>
+<pattern> ^ cita ^ <set>dias_validos_mes</set> ^ <set>month_es</set> ^ </pattern>
+<template>
+  <think><set name="MES_PREGUNTADO"><star index="5"/></set></think>
+  <srai> cita <star index="3"/>-<map name="month_index_ES"><star index="5"/></map>-20 dia </srai>
+</template>
+</category>
+
+<!--  Patron de la pregunta_ cita _ [1-9] mes -->
+<category> 
+<pattern> ^ cita ^ <set>dias_sin_cero_delante</set> ^ <set>month_es</set> ^ </pattern>
+<template>
+  <think><var name="MES_PREGUNTADO"><star index="5"/></var></think>
+  <srai> cita 0<star index="3"/>-<map name="month_index_ES"><star index="5"/></map>-20 dia </srai>
+</template>
+</category>
+
+<!-- El dia preguntado no tenia horas disponibles (se omite la palabra cita por el contacto)  -->
+<topic name="OTRO_DIA">
+ 
+  <!-- se asume mismo mes por tanto ante preguntas sin mes respondería -->
+<category> 
+<pattern> ^ <set>dias_sin_cero_delante</set> ^ </pattern>
+<template>
+  <srai> cita 0<star index="3"/>-<map name="month_index_ES"><get name="MES_PREGUNTADO"/></map>-20 dia </srai>
+</template>
+</category>
+
+<category>
+<pattern> ^ <set>dias_validos_mes</set> ^</pattern>
+<template>
+  <srai> cita <star index="2"/>-<map name="month_index_ES"><get name="MES_PREGUNTADO"/></map>-20 dia </srai>
+</template>
+</category>
+
+<!-- Si se mete el mes cuando se realice la pregunta -->
+
+<category>
+<pattern> ^ <set>dias_validos_mes</set> ^ <set>month_es</set> </pattern>
+<template>
+  <think><set name="MES_PREGUNTADO"><star index="5"/></set></think>
+  <srai> cita <star index="2"/>-<map name="month_index_ES"><star index="5"/></map>-20 dia </srai>
+</template>
+</category>
+
+<!-- Patron de la pregunta_ cita _ [1-9] mes _ -->
+<category> 
+<pattern>^ <set>dias_sin_cero_delante</set> ^ <set>month_es</set> </pattern>
+<template>
+  <think><var name="MES_PREGUNTADO"><star index="5"/></var></think>
+  <srai> cita 0<star index="2"/>-<map name="month_index_ES"><star index="5"/></map>-20 dia </srai>
+</template>
+</category>
+
+</topic>
