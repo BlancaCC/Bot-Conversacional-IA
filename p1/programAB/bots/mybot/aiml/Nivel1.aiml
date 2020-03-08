@@ -46,15 +46,17 @@ funcionCITA dd-mm-yy [manana tarde dia]
   </think>
 
   <condition var="pos">
-    <li value="0"> Pues esta todo acupado, lo siento. ¿Desea otro dia?
+    <li value="0"> Pues esta todo acupado, lo siento. ¿Desea otro dia? 
     <think>
-      <set name="topic">OTRO_DIA</set>
+      <set name="topic">SEGUNDO_ESTADO</set>
+      <!-- <set name="HAY_HORAS">false</set> -->
     </think>
     </li>
     <li>  Parece que hay hueco para ese dia a las <srai>INDICE null EN <get var="horaTrabajo"/></srai>
     <think>
       indicamos que se espera que se diga algo sobre las horas mencionamos
-      <set name="topic">RESPUESTA_HORAS</set>
+      <set name="topic">SEGUNDO_ESTADO</set>
+      <!-- <set name="HAY_HORAS">true</set> -->
     </think>
     </li>
   </condition>
@@ -298,42 +300,97 @@ tipo h:00 o hh:00
     </category>
 
 
-    <!-- ESTADO SEGUNDO: Encontrar hora (se debe de haber preguntado antes de manera correcta y con huecos una cita) -->
+    <!-- ESTADO SEGUNDO hora: Encontrar hora (se debe de haber preguntado antes de manera correcta y con huecos una cita) -->
 
-    <topic name="RESPUESTA_HORAS">
+    <topic name="SEGUNDO_ESTADO">
 
       <!-- CONFIRMAR HORA -->
       
       <!-- Buscamos hora del tipo hh -->
       <category>
-      <pattern> ^ <set>hora_simple</set> ^ </pattern>
-      <template>
-      <srai>HORA <star index="2"/>:00</srai>
-      </template>
+	<pattern> ^ <set>hora_simple</set> ^ </pattern>
+	<template>
+	  <srai>HORA <star index="2"/>:00</srai>
+	</template>
       </category>
 
       <!-- Buscamos hora del tipo hh:00 -->
       <category>
-      <pattern> ^ <set>hora_simple2</set> ^ </pattern>
-      <template>
-	<srai>HORA <star index="2"/></srai>
-      </template>
+	<pattern> ^ <set>hora_simple2</set> ^ </pattern>
+	<template>
+	  <srai>HORA <star index="2"/></srai>
+	</template>
       </category>
 
       <!-- indiferencia (responde devolviendo la primera hora libre -->
       <category>
-      <pattern> ^ <set>indiferencia</set> ^ </pattern>
-      <template>
-	<srai>HORA <srai>TOP <get name="HORAS_DISPONBLES"/></srai></srai>
-      </template>
+	<pattern> ^ <set>indiferencia</set> ^ </pattern>
+	<template>
+	  <srai>HORA <srai>TOP <get name="HORAS_DISPONBLES"/></srai></srai>
+	</template>
+      </category>
+      
+      <!-- PEDIR OTRA CITA -->
+      
+      
+
+    <!-- SEGUNDO ESTADO otro día -->
+
+      <!-- No quiere otro día, así que cortamos -->
+      <category>
+	<pattern> ^ NO ^ </pattern>
+	<template>
+	  Disculpe por no haber podido ofrecerle lo que deseaba. 
+	  <think><srai> <set name="topic">null</set></srai></think>
+	</template>
+      </category>
+
+      <!-- CAMBIAR DE DÍA DE CONSULTA -->
+
+      <!-- Se responde que sí a lo de cambiar el día  -->
+      <category>
+	<pattern> si ^ </pattern>
+	<template>
+	 <srai> CITA <star/></srai> 
+	</template>
+      </category>
+
+      <category>
+	<pattern> si </pattern>
+	<template>
+	 aja, pues estaria muy bien que me la dijeras
+	</template>
       </category>
       
 
-      <!-- PEDIR OTRA CITA -->
-     
-      
+      <!-- Se propone  otra fecha  -->
+      <category>
+	<pattern> ^ [otro dia y el para] ^</pattern>
+	<template>
+	 <srai> <star index="1"/> CITA <star index="2"/> </srai> 
+	</template>
+      </category>
+
+      <!-- Por si decie algo fuera de contexto -->
+    
+     <category>
+	<pattern> ^ </pattern>
+	<template>
+	  Perdone, soy un poquitillo torpe y me ha pillado desprevenido, me lo podria volver a explicar otra vez y si podria ser mas claro :)
+	</template>
+      </category>
+	
     </topic>
-     
+
+
+    <!-- Por si decie algo fuera de contexto -->
+    
+     <category>
+	<pattern> ^ </pattern>
+	<template>
+	 Perdone, soy un poquitillo torpe y me ha pillado desprevenido, me lo podria volver a explicar otra vez 
+	</template>
+      </category>
 
 </aiml>
 
