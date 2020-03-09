@@ -210,10 +210,24 @@ tipo h:00 o hh:00
 	  <srai>SACA TURNO AUX <star index="1"/> </srai>
 	</srai>
       </set>
+
+      <set var="HORA">
+	<srai>SACA HORA
+	  <srai>SACA HORA AUX <star index="1"/> </srai>
+	  <srai>SACA HORA AUX <star index="2"/> </srai>
+	</srai>
+      </set>
     </think>
-    
-      <srai>FUNCIONCITA <get var="FECHA"/> <get var="TURNO"/></srai>
-      
+
+    <condition var="HORA">
+      <li value="NULL">
+        <srai>FUNCIONCITA <get var="FECHA"/> <get var="TURNO"/></srai>
+      </li>
+      <li>
+	<srai>FUNCIONCITA <get var="FECHA"/> <get var="TURNO"/></srai>
+	<srai>HORA <get var="HORA"/></srai>
+      </li>
+    </condition>
     </template>
   </category>
 
@@ -283,8 +297,8 @@ tipo h:00 o hh:00
 
     <!-- SACA TURNOS (auxiliar) -->
     <category>
-      <pattern>SACA TURNO AUX ^ <set>turnos_posibles</set> ^ </pattern>
-      <template><star index="2"/></template>
+      <pattern>SACA TURNO AUX ^ [por de] ^ <set>turnos_posibles</set> ^ </pattern>
+      <template><star index="3"/></template>
     </category>
 
     <!-- SACA TURNOS vacío (auxiliar) -->
@@ -384,13 +398,13 @@ tipo h:00 o hh:00
 
 
     <!-- Por si decie algo fuera de contexto -->
-    
-     <category>
-	<pattern> ^ </pattern>
-	<template>
-	 Perdone, soy un poquitillo torpe y me ha pillado desprevenido, me lo podria volver a explicar otra vez 
-	</template>
-      </category>
+    <category>
+      <pattern> ^ </pattern>
+      <template>
+	Perdone, soy un poquitillo torpe y me ha pillado desprevenido, me lo podria volver a explicar otra vez 
+      </template>
+    </category>
+
 
 </aiml>
 

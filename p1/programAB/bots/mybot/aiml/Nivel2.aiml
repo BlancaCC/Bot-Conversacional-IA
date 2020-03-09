@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+  <!-- ESPECIFICACIÓN DEL DÍA  -->
+  <!-- (La fecha concreta ya se implementó en el nivel1) -->
+  <!-- hoy -->
+  <category>
+    <pattern>SACA FECHA ^ hoy ^</pattern>
+    <template>
+      <srai>
+	SACA FECHA <srai>DATE</srai>
+      </srai>
+    </template>
+  </category>
+
+  <!-- mañana -->
+  <category>
+   <pattern>SACA FECHA  ^ manana ^</pattern>
+    <template>
+      <srai>
+	SACA FECHA <srai>date tomorrow</srai>
+      </srai>
+    </template>
+  </category>
+
+  <!-- pasó/pasado  mañana -->
+ <category>
+   <pattern>SACA FECHA  ^ pas+ manana ^</pattern>
+    <template>
+      <srai>
+	SACA FECHA <srai>DATE IN 2 DAYS</srai>
+      </srai>
+    </template>
+ </category>
+
+
+ <!-- DETERMINACIÓN DEL PROXIMO ... --> 
+
+ <!-- Próximo día de la semana -->
+ <category>
+   <pattern>SACA FECHA  ^ proximo <set>dia</set> ^</pattern>
+   <template>   
+     <srai>
+       SACA FECHA <srai>DATE IN <srai> DAYS UNTIL <star index="2"/></srai> DAYS</srai>
+     </srai>
+   </template>
+ </category>
+
+ <!-- Siguiente día de la semana( se entiende que es una semana más que el próximo día) -->
+ <category>
+   <pattern>SACA FECHA  ^ siguiente <set>dia</set> ^</pattern>
+   <template>
+     <think>
+       <!-- Dias hasta el proximo -->
+       <set var="dia">
+	 <srai> DAYS UNTIL <star index="2"/></srai>
+       </set>
+       <!-- Sumamos una semana -->
+       <set var="dia">
+	 <srai>SUMA 7 <get var="dia"/></srai>
+       </set>
+     </think> 
+     <srai>
+       SACA FECHA <srai>DATE IN <get var="dia"/> DAYS</srai>
+     </srai>
+   </template>
+ </category>
+
+
+ <!-- DIA DE LA SEMANA CONCRETO -->
+ <category>
+   <pattern>SACA FECHA  ^ [para el] ^ <set>dia</set> ^</pattern>
+   <template>   
+     <srai>
+       SACA FECHA <srai>DATE IN <srai> DAYS UNTIL <star index="3"/></srai> DAYS</srai>
+     </srai>
+   </template>
+ </category>
+
+ <!-- PARA LA HORA -->
+
+ <!-- Buscamos hora del tipo hh -->
+ <category>
+   <pattern>SACAHORA AUX ^ <set>hora_simple</set> ^ </pattern>
+   <template>   
+     <srai><star index="2"/>:00</srai>
+   </template>
+ </category>
+ 
+ <!-- Buscamos hora del tipo hh:00 -->
+ <category>
+   <pattern>SACA HORA AUX ^ a las <set>hora_simple2</set> ^ </pattern>
+   <template>
+     <srai><star index="2"/></srai>
+   </template>
+ </category>
+
+ <category>
+   <pattern>SACA HORA AUX ^ </pattern>
+   <template>
+     <srai></srai>
+   </template>
+ </category>
+
+ <!-- Buscamos hora del tipo hh:00 -->
+ <category>
+   <pattern>SACA HORA ^ <set>hora_simple2</set> ^ </pattern>
+   <template>
+     <srai><star index="2"/></srai>
+   </template>
+ </category>
+
+ <category>
+   <pattern>SACA HORA ^  </pattern>
+   <template>
+     <srai>NULL</srai>
+   </template>
+ </category>
+
+ <!-- FUNCIONES AUXILIARES -->
+
+ <!-- resta  genérica-->
+
+ <category>
+   <pattern><set>number</set> - <set>number</set></pattern>
+   <template>
+     <think>    
+       <set var="contador">0</set>
+       <set var="repeticiones"><star index="2"/></set>
+       <set var="salida"><star index="1"/></set>
+     </think>
+     <condition var="contador">
+       <li><value><get var="repeticiones"/></value><get var="salida"/></li>
+       <li>
+	 <think>
+	   <set var="contador">
+	     <map name="successor"><get var="contador"/></map>
+	   </set>
+
+	   <set var="salida">
+	     <srai>MINUS <get var="salida"/> 1</srai>
+	   </set>
+	 </think>
+	 <loop/>
+       </li>	  
+     </condition>	  
+   </template>
+ </category>
+ 
+</aiml>
