@@ -81,9 +81,9 @@
 
  <!-- Buscamos hora del tipo hh -->
  <category>
-   <pattern>SACAHORA AUX ^ <set>hora_simple</set> ^ </pattern>
+   <pattern>SACA HORA AUX ^ <set>hora_simple</set> ^ </pattern>
    <template>   
-     <srai><star index="2"/>:00</srai>
+     <star index="2"/>:00
    </template>
  </category>
  
@@ -91,30 +91,26 @@
  <category>
    <pattern>SACA HORA AUX ^ a las <set>hora_simple2</set> ^ </pattern>
    <template>
-     <srai><star index="2"/></srai>
+     <star index="2"/>
    </template>
  </category>
 
  <category>
    <pattern>SACA HORA AUX ^ </pattern>
-   <template>
-     <srai></srai>
-   </template>
+   <template></template>
  </category>
 
  <!-- Buscamos hora del tipo hh:00 -->
  <category>
    <pattern>SACA HORA ^ <set>hora_simple2</set> ^ </pattern>
    <template>
-     <srai><star index="2"/></srai>
+     <star index="2"/>
    </template>
  </category>
 
  <category>
    <pattern>SACA HORA ^  </pattern>
-   <template>
-     <srai>NULL</srai>
-   </template>
+   <template>NULL</template>
  </category>
 
  <!-- FUNCIONES AUXILIARES -->
