@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <aiml version="2.0">
 
 <!-- Tareas pendientes para la práctica:
@@ -160,8 +160,9 @@ tipo h:00 o hh:00
     
  -->
   <category>
-    <pattern>HORA *</pattern>
+    <pattern>HORA <set>hora_simple2</set></pattern>
     <template>
+      vamos a comprobar si l ahora que me has dicho  está 
       <think>
       Comprobamos si la hora <star/>  esta definida en nuetra lista
 
@@ -182,14 +183,40 @@ tipo h:00 o hh:00
 	  <set name="topic">null</set>
 	 </think> 
 	</li>
-      </condition>
-    
+      </condition> 
   
     </template>
   </category>
   </topic>
+  
+<category>
+  <pattern>QUIERO QUE ME COJAS ESTA HORA <set>hora_simple2</set></pattern>
+    <template>
+      vamos a comprobar si la hora está 
+      <think>
+      Comprobamos si la hora <star/>  esta definida en nuetra lista
 
+      <set var="pos"> 
+	  <srai>FINDITEM <star/> IN <get name="HORAS_DISPONBLES"/></srai>
+      </set>
 
+      
+      </think>   
+      <condition var="pos">
+	<li value="0">Lo siento, esa hora <star/> no esta libre, las disponibles son <get name="HORAS_DISPONBLES"/></li>
+	<li>
+	  Muy bien, ya le he reservado a las <star/>.
+	 <think>
+	  <srai>MARK OCUPADO AT <star/> ON <get name="FECHA"/></srai>
+	  
+	  <set name="topic">null</set>
+	 </think> 
+	</li>
+      </condition> 
+  
+    </template>
+  </category>
+  
   <!-- ESTADO INIT: PREGUNTAR FECHAS  -->
 
   <!-- Cita -->
@@ -217,15 +244,14 @@ tipo h:00 o hh:00
 	  <srai>SACA HORA AUX <star index="2"/> </srai>
 	</srai>
       </set>
-    </think>
-
+      </think>
     <condition var="HORA">
       <li value="NULL">
         <srai>FUNCIONCITA <get var="FECHA"/> <get var="TURNO"/></srai>
       </li>
       <li>
 	<srai>FUNCIONCITA <get var="FECHA"/> <get var="TURNO"/></srai>
-	<srai>HORA <get var="HORA"/></srai>
+	<srai>QUIERO QUE ME COJAS ESTA HORA <get var="HORA"/></srai>
       </li>
     </condition>
     </template>
@@ -324,7 +350,7 @@ tipo h:00 o hh:00
       <category>
 	<pattern> ^ <set>hora_simple</set> ^ </pattern>
 	<template>
-	  <srai>HORA <star index="2"/>:00</srai>
+	  <srai>QUIERO QUE ME COJAS ESTA HORA <star index="2"/>:00</srai>
 	</template>
       </category>
 
@@ -332,7 +358,7 @@ tipo h:00 o hh:00
       <category>
 	<pattern> ^ <set>hora_simple2</set> ^ </pattern>
 	<template>
-	  <srai>HORA <star index="2"/></srai>
+	  <srai>QUIERO QUE ME COJAS ESTA HORA <star index="2"/></srai>
 	</template>
       </category>
 
@@ -340,7 +366,7 @@ tipo h:00 o hh:00
       <category>
 	<pattern> ^ <set>indiferencia</set> ^ </pattern>
 	<template>
-	  <srai>HORA <srai>TOP <get name="HORAS_DISPONBLES"/></srai></srai>
+	  <srai>QUIERO QUE ME COJAS ESTA HORA <srai>TOP <get name="HORAS_DISPONBLES"/></srai></srai>
 	</template>
       </category>
       

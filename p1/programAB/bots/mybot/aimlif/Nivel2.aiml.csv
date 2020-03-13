@@ -1,0 +1,12 @@
+0,SACA FECHA ^ HOY ^,*,*,<srai>#Newline	SACA FECHA <srai>DATE</srai>#Newline      </srai>,Nivel2.aiml
+0,SACA FECHA ^ MANANA ^,*,*,<srai>#Newline	SACA FECHA <srai>date tomorrow</srai>#Newline      </srai>,Nivel2.aiml
+0,SACA FECHA ^ PAS+ MANANA ^,*,*,<srai>#Newline	SACA FECHA <srai>DATE IN 2 DAYS</srai>#Newline      </srai>,Nivel2.aiml
+0,SACA FECHA ^ PROXIMO <SET>DIA</SET> ^,*,*,<srai>#Newline       SACA FECHA <srai>DATE IN <srai> DAYS UNTIL <star index="2"/></srai> DAYS</srai>#Newline     </srai>,Nivel2.aiml
+0,SACA FECHA ^ SIGUIENTE <SET>DIA</SET> ^,*,*,<think>#Newline       <!-- Dias hasta el proximo -->#Newline       <set var="dia">#Newline	 <srai> DAYS UNTIL <star index="2"/></srai>#Newline       </set>#Newline       <!-- Sumamos una semana -->#Newline       <set var="dia">#Newline	 <srai>SUMA 7 <get var="dia"/></srai>#Newline       </set>#Newline     </think> #Newline     <srai>#Newline       SACA FECHA <srai>DATE IN <get var="dia"/> DAYS</srai>#Newline     </srai>,Nivel2.aiml
+0,SACA FECHA ^ [PARA EL] ^ <SET>DIA</SET> ^,*,*,<srai>#Newline       SACA FECHA <srai>DATE IN <srai> DAYS UNTIL <star index="3"/></srai> DAYS</srai>#Newline     </srai>,Nivel2.aiml
+0,SACA HORA AUX ^ A LAS <SET>HORA_SIMPLE</SET> ^,*,*,<star index="2"/>:00,Nivel2.aiml
+0,SACA HORA AUX ^ A LAS <SET>HORA_SIMPLE2</SET> ^,*,*,<star index="2"/>,Nivel2.aiml
+0,SACA HORA AUX ^,*,*,<template/>,Nivel2.aiml
+0,SACA HORA ^ <SET>HORA_SIMPLE2</SET> ^,*,*,<star index="2"/>,Nivel2.aiml
+0,SACA HORA ^,*,*,NULL,Nivel2.aiml
+0,<SET>NUMBER</SET> - <SET>NUMBER</SET>,*,*,<think>    #Newline       <set var="contador">0</set>#Newline       <set var="repeticiones"><star index="2"/></set>#Newline       <set var="salida"><star index="1"/></set>#Newline     </think>#Newline     <condition var="contador">#Newline       <li><value><get var="repeticiones"/></value><get var="salida"/></li>#Newline       <li>#Newline	 <think>#Newline	   <set var="contador">#Newline	     <map name="successor"><get var="contador"/></map>#Newline	   </set>#Newline#Newline	   <set var="salida">#Newline	     <srai>MINUS <get var="salida"/> 1</srai>#Newline	   </set>#Newline	 </think>#Newline	 <loop/>#Newline       </li>	  #Newline     </condition>,Nivel2.aiml

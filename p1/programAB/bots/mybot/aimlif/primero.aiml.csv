@@ -1,0 +1,9 @@
+0,HOLA,*,*,Holilla soso amigo,primero.aiml
+0,HOLA *,*,*,HOLAAAAAAA <star/> es el mejor salud que me han dicho hasta el momento <star/>,primero.aiml
+0,BUENAS ^,*,*,Buenos y positivos días tenga usted,primero.aiml
+0,* Y *,*,*,No sabía que <star index="2"/> y <star index="1"/> Fueran pareja :O,primero.aiml
+0,CUAL ES TU EDAD,*,*,tengo <bot name="age"/>#Newlineanos,primero.aiml
+0,^ ME LLAMO *,*,*,<set name="nombre"><star index="2"/></set>#Newline  <get name="nombre"/> es un bonito nombre,primero.aiml
+0,MI COLOR FAVORITO ES EL *,*,*,<set var="color"><star/></set>#Newline  <get var="color"/>  es el color de mis ojos ;),primero.aiml
+0,COLOR FAVORITO *,*,*,<think><set var="color"><star/></set>   </think>#Newline  <get var="color"/>  es el color de mis ojos2222 ;),primero.aiml
+0,QUE PASA,*,*,<srai>HOLA</srai>,primero.aiml

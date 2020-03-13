@@ -81,7 +81,7 @@
 
  <!-- Buscamos hora del tipo hh -->
  <category>
-   <pattern>SACA HORA AUX ^ <set>hora_simple</set> ^ </pattern>
+   <pattern>SACA HORA AUX ^ a las <set>hora_simple</set> ^ </pattern>
    <template>   
      <star index="2"/>:00
    </template>
