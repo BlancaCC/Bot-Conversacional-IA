@@ -152,71 +152,8 @@ funcionCITA dd-mm-yy [manana tarde dia]
   </template>
 </category>
 
-  <!-- RESPUESTAS POSIBLES TRAS DECIR LAS HORAS topic "RESPUESTA HORAS" -->
-  <topic name="RESPUESTA_HORAS">
-    <!-- Esta es la función elemental, para que funcione el patrón debe ser 
-tipo h:00 o hh:00
-    <pattern>HORA <set>hora_simple</set></pattern>
-    
- -->
-  <category>
-    <pattern>HORA <set>hora_simple2</set></pattern>
-    <template>
-      vamos a comprobar si l ahora que me has dicho  está 
-      <think>
-      Comprobamos si la hora <star/>  esta definida en nuetra lista
+ 
 
-      <set var="pos"> 
-	  <srai>FINDITEM <star/> IN <get name="HORAS_DISPONBLES"/></srai>
-      </set>
-
-      
-      </think>
-      
-      <condition var="pos">
-	<li value="0">Lo siento, esa hora <star/> no esta libre, las disponibles son <get name="HORAS_DISPONBLES"/></li>
-	<li>
-	  Muy bien, ya le he reservado a las <star/>.
-	 <think>
-	  <srai>MARK OCUPADO AT <star/> ON <get name="FECHA"/></srai>
-	  
-	  <set name="topic">null</set>
-	 </think> 
-	</li>
-      </condition> 
-  
-    </template>
-  </category>
-  </topic>
-  
-<category>
-  <pattern>QUIERO QUE ME COJAS ESTA HORA <set>hora_simple2</set></pattern>
-    <template>
-      vamos a comprobar si la hora está 
-      <think>
-      Comprobamos si la hora <star/>  esta definida en nuetra lista
-
-      <set var="pos"> 
-	  <srai>FINDITEM <star/> IN <get name="HORAS_DISPONBLES"/></srai>
-      </set>
-
-      
-      </think>   
-      <condition var="pos">
-	<li value="0">Lo siento, esa hora <star/> no esta libre, las disponibles son <get name="HORAS_DISPONBLES"/></li>
-	<li>
-	  Muy bien, ya le he reservado a las <star/>.
-	 <think>
-	  <srai>MARK OCUPADO AT <star/> ON <get name="FECHA"/></srai>
-	  
-	  <set name="topic">null</set>
-	 </think> 
-	</li>
-      </condition> 
-  
-    </template>
-  </category>
-  
   <!-- ESTADO INIT: PREGUNTAR FECHAS  -->
 
   <!-- Cita -->
@@ -251,7 +188,7 @@ tipo h:00 o hh:00
       </li>
       <li>
 	<srai>FUNCIONCITA <get var="FECHA"/> <get var="TURNO"/></srai>
-	<srai>QUIERO QUE ME COJAS ESTA HORA <get var="HORA"/></srai>
+	<srai>HORA <get var="HORA"/></srai>
       </li>
     </condition>
     </template>
@@ -344,13 +281,43 @@ tipo h:00 o hh:00
 
     <topic name="SEGUNDO_ESTADO">
 
+
+      <category>
+  <pattern>HORA <set>hora_simple2</set></pattern>
+    <template>
+      vamos a comprobar si la hora está 
+      <think>
+      Comprobamos si la hora <star/>  esta definida en nuetra lista
+
+      <set var="pos"> 
+	  <srai>FINDITEM <star/> IN <get name="HORAS_DISPONBLES"/></srai>
+      </set>
+
+      
+      </think>   
+      <condition var="pos">
+	<li value="0">Lo siento, esa hora <star/> no esta libre, las disponibles son <get name="HORAS_DISPONBLES"/></li>
+	<li>
+	  Muy bien, ya le he reservado a las <star/>.
+	 <think>
+	  <srai>MARK OCUPADO AT <star/> ON <get name="FECHA"/></srai>
+	  
+	  <set name="topic">null</set>
+	 </think> 
+	</li>
+      </condition> 
+  
+    </template>
+  </category>
+  
+      
       <!-- CONFIRMAR HORA -->
       
       <!-- Buscamos hora del tipo hh -->
       <category>
 	<pattern> ^ <set>hora_simple</set> ^ </pattern>
 	<template>
-	  <srai>QUIERO QUE ME COJAS ESTA HORA <star index="2"/>:00</srai>
+	  <srai>HORA <star index="2"/>:00</srai>
 	</template>
       </category>
 
@@ -358,7 +325,7 @@ tipo h:00 o hh:00
       <category>
 	<pattern> ^ <set>hora_simple2</set> ^ </pattern>
 	<template>
-	  <srai>QUIERO QUE ME COJAS ESTA HORA <star index="2"/></srai>
+	  <srai>HORA <star index="2"/></srai>
 	</template>
       </category>
 
@@ -366,7 +333,7 @@ tipo h:00 o hh:00
       <category>
 	<pattern> ^ <set>indiferencia</set> ^ </pattern>
 	<template>
-	  <srai>QUIERO QUE ME COJAS ESTA HORA <srai>TOP <get name="HORAS_DISPONBLES"/></srai></srai>
+	  <srai>HORA <srai>TOP <get name="HORAS_DISPONBLES"/></srai></srai>
 	</template>
       </category>
       
