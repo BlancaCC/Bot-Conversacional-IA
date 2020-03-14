@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+
+  <!-- FRASES DEL BOT -->
+
+  <!-- Por si nos pide que saludemos -->
+  <category>
+    <pattern> ^ <set>saludos</set></pattern>
+    <template>
+      Buenas, bienvenida a la clínica ¿Que desea?
+    </template>
+  </category>
+
+  <!-- Nos indica que desea una cita -->
+  <category>
+    <pattern>PREGUNTAR CUANDO QUIERE CITA </pattern>
+    <template>Para cuando quiere la cita? </template>
+  </category>
+
+  <!-- No sabe cuándo quiere la cita  -->
+  <!-- BUSCAR SEMANA DE BÚSQUEDA -->
+  <!-- Función que saque los días libres -->
+  <!-- Una vez que tenga el día que se vaya pa la funcioncita y que le pregunte las horas -->
+  
+ <category>
+    <pattern> ^ <set>indecision</set> ^ </pattern>
+    <template>
+      <!-- Ir preguntando por semanas -->
+
+      <!-- Ir preguntando días --> 
+      
+    </template>
+  </category>
+
+  
+
+
+</aiml>

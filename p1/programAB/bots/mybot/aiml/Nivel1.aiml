@@ -44,7 +44,6 @@ funcionCITA dd-mm-yy [manana tarde dia]
   </set>
 
   </think>
-
   <condition var="pos">
     <li value="0"> Pues esta todo acupado, lo siento. ¿Desea otro dia? 
     <think>
@@ -60,7 +59,7 @@ funcionCITA dd-mm-yy [manana tarde dia]
     </think>
     </li>
   </condition>
-  
+
 </template>
 </category>
 
@@ -163,9 +162,11 @@ funcionCITA dd-mm-yy [manana tarde dia]
     <template>
       <think>
 	
-      <set var="FECHA">
+	<set var="FECHA">
+	  <srai>SACA FECHA FIN 
 	<srai>SACA FECHA <star index="2"/> </srai>
 	<srai>SACA FECHA <star index="1"/> </srai>
+	  </srai>
       </set>
 
       <set var="TURNO">
@@ -182,23 +183,46 @@ funcionCITA dd-mm-yy [manana tarde dia]
 	</srai>
       </set>
       </think>
-    <condition var="HORA">
-      <li value="NULL">
-        <srai>FUNCIONCITA <get var="FECHA"/> <get var="TURNO"/></srai>
-      </li>
-      <li>
-	<srai>FUNCIONCITA <get var="FECHA"/> <get var="TURNO"/></srai>
-	<srai>HORA <get var="HORA"/></srai>
-      </li>
-    </condition>
-    </template>
+      Se ha leido:
+      Fecha: <get var="FECHA"/>
+      Turno: <get var="TURNO"/>
+      Hora: <get var="HORA"/>
+      
+      <condition var="FECHA">
+	<li value="NULL">
+	  <srai>PREGUNTAR CUANDO QUIERE CITA</srai>
+	  <think><set name="topic">SEGUNDO_ESTADO</set></think>
+	</li>
+	<li>
+	  <condition var="HORA">
+	    <li value="NULL">
+              <srai>FUNCIONCITA <get var="FECHA"/> <get var="TURNO"/></srai>
+	    </li>
+	    <li>
+	      <srai>FUNCIONCITA <get var="FECHA"/> <get var="TURNO"/></srai>
+	      <srai>HORA <get var="HORA"/></srai>
+	    </li>
+	  </condition>
+	</li>
+      </condition>
+  </template>
   </category>
 
   <!-- Descomposición del mensaje -->
 
   <!-- FECHAS -->
+  <!-- SACA FECHA NULL (si no es una fecha no devuelve nada) -->
   
-  <!-- SACA FECHA vacio (si no es una fecha no devuelve nada) -->
+  <category>
+    <pattern>SACA FECHA FIN</pattern>
+    <template>NULL</template>
+  </category>
+  
+  <category>
+    <pattern>SACA FECHA FIN ^</pattern>
+    <template><star/></template>
+  </category>
+  
   <category>
     <pattern>SACA FECHA ^</pattern>
     <template></template>
@@ -283,32 +307,29 @@ funcionCITA dd-mm-yy [manana tarde dia]
 
 
       <category>
-  <pattern>HORA <set>hora_simple2</set></pattern>
-    <template>
-      vamos a comprobar si la hora está 
-      <think>
-      Comprobamos si la hora <star/>  esta definida en nuetra lista
+	<pattern>HORA <set>hora_simple2</set></pattern>
+	<template>
+	  vamos a comprobar si la hora está 
+	  <think>
+	    Comprobamos si la hora <star/>  esta definida en nuetra lista
 
-      <set var="pos"> 
-	  <srai>FINDITEM <star/> IN <get name="HORAS_DISPONBLES"/></srai>
-      </set>
-
-      
-      </think>   
-      <condition var="pos">
-	<li value="0">Lo siento, esa hora <star/> no esta libre, las disponibles son <get name="HORAS_DISPONBLES"/></li>
-	<li>
-	  Muy bien, ya le he reservado a las <star/>.
-	 <think>
-	  <srai>MARK OCUPADO AT <star/> ON <get name="FECHA"/></srai>
+	    <set var="pos"> 
+	      <srai>FINDITEM <star/> IN <get name="HORAS_DISPONBLES"/></srai>
+	    </set>
+	  </think>   
+	  <condition var="pos">
+	    <li value="0">Lo siento, esa hora <star/> no esta libre, las disponibles son <get name="HORAS_DISPONBLES"/></li>
+	    <li>
+	      Muy bien, ya le he reservado a las <star/>.
+	      <think>
+		<srai>MARK OCUPADO AT <star/> ON <get name="FECHA"/></srai>
 	  
-	  <set name="topic">null</set>
-	 </think> 
-	</li>
-      </condition> 
-  
-    </template>
-  </category>
+		<set name="topic">null</set>
+	      </think> 
+	    </li>
+	  </condition> 
+	</template>
+      </category>
   
       
       <!-- CONFIRMAR HORA -->

@@ -1,8 +1,0 @@
-0,^ CAFE ^,*,*,te gusta el cafe,segundo.aiml
-0,SI,TE GUSTA EL CAFE,*,lo prefieres solo o con leche,segundo.aiml
-0,*,TE GUSTA EL CAFE,*,Yo la verdad es que soy mas de te,segundo.aiml
-0,^ TE ^,*,*,te gusta el <set name="topic"> te </set>,segundo.aiml
-0,^ SI ^,*,TE,AAAAAAA YA TENEMOS ALGO EN COMuN,segundo.aiml
-0,HOLA,*,TE,<random>#Newline	<li> No me he quedado dormido#Comma lo prometo#Comma no necesito un te</li>#Newline	<li> h o l a aaa</li>#Newline	<li>Estoy to bien tuxs </li>#Newline      </random>,segundo.aiml
-0,ADIOS,*,TE,Espera puedo cambiar#Comma ya te dejo de hablar de te#Newline    <think><set name="topic"> unkown </set>   </think>,segundo.aiml
-0,CUENTA HASTA <SET>NUMBER</SET>,*,*,<!-- Declaramos variables auxiliares-->#Newline    <think>#Newline      <set var="contador">1</set> <!-- almacena los distintos niveles -->#Newline      <set var="salida">1</set>   <!-- almacena cadena con lo dicho -->#Newline    </think>#Newline#Newline    <condition var="contador">#Newline      <li> <value><star/></value><get var="salida"/> </li>#Newline      <li>#Newline	<think>#Newline	  <set var="contador">#Newline	    <map name="successor"><get var="contador"/></map>#Newline	  </set>#Newline#Newline	  <set var="salida"><get var="salida"/> <get var="contador"/></set>#Newline	</think>#Newline	<loop/>#Newline	#Newline      </li>#Newline    </condition>,segundo.aiml
