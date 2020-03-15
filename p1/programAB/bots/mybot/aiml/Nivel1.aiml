@@ -30,10 +30,10 @@ funcionCITA dd-mm-yy [manana tarde dia]
   <set name="FECHA"><star index="1"/></set>
   <set var="horas"><srai> LIST OF DAY <get name="FECHA"/></srai></set>
 
-  Rango de horas preguntado, es decir si manana tarde o dia
+  <!-- Rango de horas preguntado, es decir si manana tarde o dia -->
   <set name="turno"><star index="2"/></set>
 
-  Estas son las horas de trabajo:
+  <!--Estas son las horas de trabajo: -->
 
   <set var="horaTrabajo">
     <srai> SUBLIST FROM <map name="horas">inicio_<get name="turno"/></map> TO <map name="horas">fin_<get name="turno"/></map> OF <get var="horas"/> </srai>
@@ -62,6 +62,7 @@ funcionCITA dd-mm-yy [manana tarde dia]
 
 </template>
 </category>
+
 
 <!-- Funciones auxiliares -->
 

@@ -18,6 +18,20 @@
     <template>Para cuando quiere la cita? </template>
   </category>
 
+
+
+  <!-- FÚNCIÓN DE BÚSQUEDA DE DÍA DE DÍAS LIBRES -->
+  <!-- Empezaremos en principio con 5 días --> 
+  <category>
+    <pattern>SACA DiAS LIBRES <set>dias_validos_mes</set> <set>month_es</set> </pattern>
+    <template>
+      <set var="fecha"> 
+	<srai> SACA FECHA <start index="1"/> <start index="2"/></srai>
+      </set>
+    </template>
+  </category>
+  
+ 
   <!-- No sabe cuándo quiere la cita  -->
   <!-- BUSCAR SEMANA DE BÚSQUEDA -->
   <!-- Función que saque los días libres -->
@@ -27,11 +41,54 @@
     <pattern> ^ <set>indecision</set> ^ </pattern>
     <template>
       <!-- Ir preguntando por semanas -->
-
+      a
       <!-- Ir preguntando días --> 
       
     </template>
-  </category>
+ </category>
+
+
+ 
+<!-- Dada una fecha un intervalo de horas devuelve tal rango de horas -->
+
+<category>
+  <pattern>HORAS TRABAJO  *  DE <set>hora_simple2</set> A <set>hora_simple2</set></pattern>
+  <template>
+
+    
+    <set name="horas_posibles">00:00 01:00 02:00 03:00 04:00 05:00 06:00 07:00 08:00 09:00 10:00 11:00 12:00 13:00 14:00 15:00 16:00 17:00 18:00 19:00 20:00 21:00 22:00 23:00 </set>
+    
+    <srai>
+      SUBLIST FROM <srai>ORDINAL <star index="2"/></srai> TO <srai>ORDINAL <star index="3"/></srai> OF <srai>LIST OF DAY <star index="1"/></srai>
+    </srai>
+
+    <set var="horas_seleccionadas">
+      <srai>
+	 SUBLIST FROM <srai>ORDINAL <star index="2"/></srai> TO <srai>ORDINAL <star index="3"/></srai> OF <get name="horas_posibles"/>
+      </srai>
+    </set>
+
+    <set var="pos"> 
+      <srai>FINDITEM <star/> IN <get name="HORAS_DISPONBLES"/></srai>
+    </set>
+  
+    <condition var="pos">
+      <li value="0">Lo siento, esa hora <star/> no esta libre, las disponibles son <get name="HORAS_DISPONBLES"/></li>
+      <li>
+	Muy bien, ya le he reservado a las <star/>.
+	<think>
+	  <srai>MARK OCUPADO AT <star/> ON <get name="FECHA"/></srai>
+	  
+	  <set name="topic">null</set>
+	</think> 
+      </li>
+    </condition> 
+      
+
+    
+  </template>
+</category>
+
 
   
 
