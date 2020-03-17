@@ -183,12 +183,13 @@ funcionCITA dd-mm-yy [manana tarde dia]
 	  <srai>SACA HORA AUX <star index="2"/> </srai>
 	</srai>
       </set>
-      </think>
+     
       Se ha leido:
       Fecha: <get var="FECHA"/>
       Turno: <get var="TURNO"/>
       Hora: <get var="HORA"/>
       
+       </think>
       <condition var="FECHA">
 	<li value="NULL">
 	  <srai>PREGUNTAR CUANDO QUIERE CITA</srai>

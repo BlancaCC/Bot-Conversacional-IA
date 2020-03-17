@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<aiml version="2.0">
+
+  <!-- Dada una cita  y un intervalo de horas devuelve
+       - true si hay horas libres
+       - False si todas las horas están a false 
+ >
+
+<category> 
+  <pattern>FUNCIONCITA *  DE <set>hora_simple2</set> A <set>hora_simple2</set></pattern>
+  <template>
+    
+  </template>
+</category>
+
+
+
+
+
+cASO A SUCIO
+ <set name="horas_posibles">00:00 01:00 02:00 03:00 04:00 05:00 06:00 07:00 08:00 09:00 10:00 11:00 12:00 13:00 14:00 15:00 16:00 17:00 18:00 19:00 20:00 21:00 22:00 23:00 </set>
+
+
+    <set var="horas_seleccionadas">
+      <srai>
+	 SUBLIST FROM <srai>ORDINAL <star index="2"/></srai> TO <srai>ORDINAL <star index="3"/></srai> OF <get name="horas_posibles"/>
+      </srai>
+      </set>
+
+ horas trabajo 11-04-20 de 10:00 a 23:00
+
+ -->
+</aiml>

@@ -18,19 +18,6 @@
     <template>Para cuando quiere la cita? </template>
   </category>
 
-
-
-  <!-- FÚNCIÓN DE BÚSQUEDA DE DÍA DE DÍAS LIBRES -->
-  <!-- Empezaremos en principio con 5 días --> 
-  <category>
-    <pattern>SACA DiAS LIBRES <set>dias_validos_mes</set> <set>month_es</set> </pattern>
-    <template>
-      <set var="fecha"> 
-	<srai> SACA FECHA <start index="1"/> <start index="2"/></srai>
-      </set>
-    </template>
-  </category>
-  
  
   <!-- No sabe cuándo quiere la cita  -->
   <!-- BUSCAR SEMANA DE BÚSQUEDA -->
@@ -41,53 +28,127 @@
     <pattern> ^ <set>indecision</set> ^ </pattern>
     <template>
       <!-- Ir preguntando por semanas -->
-      a
+      ¿Quiere para esta semana?
       <!-- Ir preguntando días --> 
       
     </template>
  </category>
-
-
  
-<!-- Dada una fecha un intervalo de horas devuelve tal rango de horas -->
+
+ <!-- Dada una fecha dd-mm-yy  y un intervalo de horas hh:00 devuelve
+      - TRUE si hay horas libres
+      - FALSE si todas las horas están OCUPADAS
+ -->
 
 <category>
   <pattern>HORAS TRABAJO  *  DE <set>hora_simple2</set> A <set>hora_simple2</set></pattern>
   <template>
+      <think>
+	<set var="tramo_horario">
+	  <srai>
+	    SUBLIST FROM <srai>ORDINAL <star index="2"/></srai> TO <srai>ORDINAL <star index="3"/></srai> OF <srai>LIST OF DAY <star index="1"/></srai>
+	  </srai>
+	</set>
 
-    
-    <set name="horas_posibles">00:00 01:00 02:00 03:00 04:00 05:00 06:00 07:00 08:00 09:00 10:00 11:00 12:00 13:00 14:00 15:00 16:00 17:00 18:00 19:00 20:00 21:00 22:00 23:00 </set>
-    
-    <srai>
-      SUBLIST FROM <srai>ORDINAL <star index="2"/></srai> TO <srai>ORDINAL <star index="3"/></srai> OF <srai>LIST OF DAY <star index="1"/></srai>
-    </srai>
-
-    <set var="horas_seleccionadas">
-      <srai>
-	 SUBLIST FROM <srai>ORDINAL <star index="2"/></srai> TO <srai>ORDINAL <star index="3"/></srai> OF <get name="horas_posibles"/>
-      </srai>
-    </set>
-
-    <set var="pos"> 
-      <srai>FINDITEM <star/> IN <get name="HORAS_DISPONBLES"/></srai>
-    </set>
-  
-    <condition var="pos">
-      <li value="0">Lo siento, esa hora <star/> no esta libre, las disponibles son <get name="HORAS_DISPONBLES"/></li>
-      <li>
-	Muy bien, ya le he reservado a las <star/>.
-	<think>
-	  <srai>MARK OCUPADO AT <star/> ON <get name="FECHA"/></srai>
-	  
-	  <set name="topic">null</set>
-	</think> 
-      </li>
-    </condition> 
-      
-
-    
+	<set var="pos"> 
+	  <srai>FINDITEM null IN <get var="tramo_horario"/></srai>
+	</set>
+      </think>
+      <condition var="pos">
+	<li value="0">FALSE</li>
+	<li>TRUE </li>
+      </condition> 
   </template>
 </category>
+
+<category>
+  <pattern>HORAS TRABAJO2  *  DE <set>hora_simple2</set> A <set>hora_simple2</set></pattern>
+  <template>
+    <think>
+      <set var="dia">
+	<srai>
+	  SACA FECHA <star index="1"/>
+	  <!-- sobrecargar a fecha para que fecha de 11-12-11 sea identidad -->
+	</srai>
+      </set>
+      
+      <set var="tramo_horario">
+	<srai>
+	  SUBLIST FROM <srai>ORDINAL <star index="2"/></srai> TO <srai>ORDINAL <star index="3"/></srai> OF <srai>LIST OF DAY <get var="dia"/></srai>
+	</srai>
+      </set>
+
+      <set var="pos"> 
+	<srai>FINDITEM null IN <get var="tramo_horario"/></srai>
+      </set>
+    </think>
+    <condition var="pos">
+      <li value="0">FALSE</li>
+      <li>TRUE</li>
+    </condition> 
+  </template>
+</category>
+
+
+<!-- Dada una fecha  y SUS CINCO DÍAS SIGUIENTES
+     - FALSE si tods los dias están ocupados
+     - <lista con los días libres en formato >
+-->
+
+<category>
+  <pattern>SEMANA LIBRE * POR LA *</pattern>
+  <template>
+
+    <think>
+    <set var="turno"><star index="2"/></set>
+     <set var="turno">
+       <condition var="turno">
+	 <li value="manana">DE  08:00 A 13:00</li>
+	 <li value="tarde">DE  14:00 A 20:00</li>
+	 <li>DE 08:00 A 20:00</li>
+       </condition>
+     </set>
+    
+    <set var="dia"><star index="1"/></set>
+    <set name="DIAS_LIBRES"></set>
+    <set var="cnt">0</set>
+    <set var="hueco">FALSE</set>
+
+    <set var="dias_hasta_viernes">5</set>
+
+    </think>	
+    <condition var="cnt">
+      <li><value><get var="dias_hasta_viernes"/></value>
+	<condition var="hueco">
+	  <li value="TRUE"> <get name="DIAS_LIBRES"/></li>
+	  <li>FALSE</li>
+	</condition>
+     
+      </li>
+      <li>
+	<think>
+	  <set var="bool_horas_libres">
+	    <srai>HORAS TRABAJO2 <get var="dia"/> <get var="turno"/></srai>
+	  </set>
+	
+	  <condition var="bool_horas_libres">
+	    <li value="TRUE">
+	      <set name="DIAS_LIBRES"> <get name="DIAS_LIBRES"/> <get var="dia"/></set>
+	      <set var="hueco">TRUE</set>	    
+	    </li>
+	  </condition>
+
+	  <set var="dia"><srai>TOMORROWDATE <get var="dia"/> </srai></set>	
+	  <set var="cnt"><srai>SUCCESSOR <get var="cnt"/></srai></set>
+	</think>
+	<loop/>
+      </li>
+    </condition>
+  </template>
+</category>
+
+
+
 
 
   
