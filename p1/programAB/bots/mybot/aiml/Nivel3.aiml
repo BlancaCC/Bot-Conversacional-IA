@@ -15,7 +15,7 @@
   <!-- Nos indica que desea una cita -->
   <category>
     <pattern>PREGUNTAR CUANDO QUIERE CITA </pattern>
-    <template>Para cuando quiere la cita? </template>
+    <template>Para cuando quiere la cita?</template>
   </category>
 
  
@@ -23,19 +23,73 @@
   <!-- BUSCAR SEMANA DE BÚSQUEDA -->
   <!-- Función que saque los días libres -->
   <!-- Una vez que tenga el día que se vaya pa la funcioncita y que le pregunte las horas -->
-  
- <category>
-    <pattern> ^ <set>indecision</set> ^ </pattern>
-    <template>
-      <!-- Ir preguntando por semanas -->
-      ¿Quiere para esta semana?
-      <!-- Ir preguntando días --> 
-      
-    </template>
- </category>
- 
 
- <!-- Dada una fecha dd-mm-yy  y un intervalo de horas hh:00 devuelve
+  <topic name="SEGUNDO_ESTADO">
+	
+    <category>
+      <pattern> indecision </pattern>
+      <template>Quiere para esta semana
+      <think>
+	<set name="INDECISION">TRUE</set>
+	<set name="DIAS_ACUMULADOS">0</set>
+      </think>
+    </template>
+    </category>
+
+    <!-- Funcion para acupular día de la semana -->
+    <category>
+      <pattern> NO QUIERE ESTA SEMANA </pattern>
+      <template>¿Quiere para la siguiente?
+      <think>
+	<set name="DIAS_ACUMULADOS">
+	  <srai>SUMA 7 <get name="DIAS_ACUMULADOS"/></srai>
+	</set>
+      </think>
+    </template>
+    </category>
+      
+
+    <category>
+      <pattern> RESPONDE INDECISION * </pattern>
+      <template>
+	<!-- llevar acarreo de día  y día  qu efaltan hasta viernes -->
+	<think>
+	<condition name="DIAS_ACUMULADOS">
+	  <li value="0">
+	    <set var="dia"> <srai> DATE </srai></set>
+	    <set var="fecha_tope"> <srai> DAYS UNTIL VIERNES </srai></set>
+	  </li>
+	  <li>
+	    <set name ="DIAS_ACUMULADOS"><srai><get name ="DIAS_ACUMULADOS"/>  - <srai> 6 -  <srai> DAYS UNTIL DOMINGO </srai></srai></srai> </set>
+	    <set var="dia"><srai> FECHA ACUMULADA </srai></set>
+	    <set var="fecha_tope">5</set>
+	  </li>
+	</condition>
+
+	<set var="TURNO">
+	  <srai> SACA TURNO 
+	  <srai>SACA TURNO AUX <star/> </srai>
+	  </srai>
+	</set>
+
+	<set var="resultado">
+	  <srai>SEMANA LIBRE  <get var="dia"/> POR LA <get var="TURNO"/> HASTA <get var="fecha_tope"/></srai>
+	</set>
+	</think>
+	<condition var="resultado">
+	  <li value="FALSE"> Lo siento no hay dias libres para esta semana.
+	  Preguntar la siguiente semana
+	  </li>
+	  <li>
+	    Lo dias que tengo disponible son <get var="resultado"/>
+	  </li>
+	  
+	  </condition>
+      </template>
+    </category>
+ 
+  </topic>
+> <!-- Dada una fecha dd-mm-yy  y un intervalo de horas hh:00 devuelve
       - TRUE si hay horas libres
       - FALSE si todas las horas están OCUPADAS
  -->
@@ -90,13 +144,16 @@
 </category>
 
 
+
+
+
 <!-- Dada una fecha  y SUS CINCO DÍAS SIGUIENTES
      - FALSE si tods los dias están ocupados
      - <lista con los días libres en formato >
 -->
 
 <category>
-  <pattern>SEMANA LIBRE * POR LA *</pattern>
+  <pattern>SEMANA LIBRE * POR LA * HASTA * </pattern>
   <template>
 
     <think>
@@ -107,14 +164,14 @@
 	 <li value="tarde">DE  14:00 A 20:00</li>
 	 <li>DE 08:00 A 20:00</li>
        </condition>
-     </set>
+     </set>>
     
     <set var="dia"><star index="1"/></set>
     <set name="DIAS_LIBRES"></set>
     <set var="cnt">0</set>
     <set var="hueco">FALSE</set>
 
-    <set var="dias_hasta_viernes">5</set>
+    <set var="dias_hasta_viernes"><star index="3"/></set>
 
     </think>	
     <condition var="cnt">
@@ -133,7 +190,7 @@
 	
 	  <condition var="bool_horas_libres">
 	    <li value="TRUE">
-	      <set name="DIAS_LIBRES"> <get name="DIAS_LIBRES"/> <get var="dia"/></set>
+	      <set name="DIAS_LIBRES"> <get name="DIAS_LIBRES"/>, <get var="dia"/></set>
 	      <set var="hueco">TRUE</set>	    
 	    </li>
 	  </condition>
@@ -147,11 +204,30 @@
   </template>
 </category>
 
+<!-- Fecha dentro de 4 días -->
 
+<category>
+  <pattern>FECHA ACUMULADA</pattern>
+  <template>
+    <think>
+      <set var="dia"> <srai> DATE </srai></set>
+      <set var="cnt">0</set>
+    </think>
+    <condition var="cnt">
+      <li><value><get name="DIAS_ACUMULADOS"/></value> <get var="dia"/> </li>
+      <li>
+	<think>
+	  <set var="dia"><srai>TOMORROWDATE <get var="dia"/> </srai></set>	
+	  <set var="cnt"><srai>SUCCESSOR <get var="cnt"/></srai></set>
+	</think>
+	<loop/>
+      </li>
+    </condition>
 
+  </template>
+</category>
 
-
-  
 
 
 </aiml>
+

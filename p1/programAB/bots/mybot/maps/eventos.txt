@@ -38,10 +38,10 @@
 14-03-20:null null null null null null null null null null OCUPADO null null null null null null null null null null null null null
 15-03-20:null null null null null null null null null null null null null null null null null null null null null null null null
 16-03-20:null null null null null null null null null null null null null null null null null null null null null null null null
-17-03-20:null null null null null null null null null null null null null null null null null null null null null null null null
+17-03-20:null null null null null null null null null null null null null null null null null null null null OCUPADO null null null
 18-03-20:null null null null null null null null null null null null null null null null null null null null null null null null
 19-03-20:null null null null null null null null null null OCUPADO null null OCUPADO null null null null null null null null null null
-20-03-20:null null null null null null null null null null null null null null null null null null null null OCUPADO null null null
+20-03-20:null null null null null null null null null null null null null null null null null null OCUPADO null OCUPADO null null null
 21-03-20:null null null null null null null null null null null null null null null null null null null null null null null null
 22-03-20:null null null null null null null null null null null null null null null null null null null null null null null null
 23-03-20:null null null null null null null null null null null null null null null null null null null null null null null null

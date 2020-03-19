@@ -1,52 +1,117 @@
+> <!-- Dada una fecha dd-mm-yy  y un intervalo de horas hh:00 devuelve
+      - TRUE si hay horas libres
+      - FALSE si todas las horas están OCUPADAS
+ -->
 
-   <category>
-   <pattern>resta <set>number</set> <set>number</set></pattern>
-   <template>
-     <set name="a"><star index="1"/></set>
-     <set name="a"><srai>MINUS <get name="a"/> 1</srai></set>
-     
-       REPITE <star index="2"/> set name="a"><srai>MINUS <get name="a"/> 1</srai>/set>
-     <srai>
-       REPITE <star index="2"/> <set name="a"><srai>MINUS <get name="a"/> 1</srai></set>
-     </srai> 
-   </template>
-  </category>
+<category>
+  <pattern>HORAS TRABAJO  *  DE <set>hora_simple2</set> A <set>hora_simple2</set></pattern>
+  <template>
+      <think>
+	<set var="tramo_horario">
+	  <srai>
+	    SUBLIST FROM <srai>ORDINAL <star index="2"/></srai> TO <srai>ORDINAL <star index="3"/></srai> OF <srai>LIST OF DAY <star index="1"/></srai>
+	  </srai>
+	</set>
+
+	<set var="pos"> 
+	  <srai>FINDITEM null IN <get var="tramo_horario"/></srai>
+	</set>
+      </think>
+      <condition var="pos">
+	<li value="0">FALSE</li>
+	<li>TRUE </li>
+      </condition> 
+  </template>
+</category>
+
+<category>
+  <pattern>HORAS TRABAJO2  *  DE <set>hora_simple2</set> A <set>hora_simple2</set></pattern>
+  <template>
+    <think>
+      <set var="dia">
+	<srai>
+	  SACA FECHA <star index="1"/>
+	  <!-- sobrecargar a fecha para que fecha de 11-12-11 sea identidad -->
+	</srai>
+      </set>
+      
+      <set var="tramo_horario">
+	<srai>
+	  SUBLIST FROM <srai>ORDINAL <star index="2"/></srai> TO <srai>ORDINAL <star index="3"/></srai> OF <srai>LIST OF DAY <get var="dia"/></srai>
+	</srai>
+      </set>
+
+      <set var="pos"> 
+	<srai>FINDITEM null IN <get var="tramo_horario"/></srai>
+      </set>
+    </think>
+    <condition var="pos">
+      <li value="0">FALSE</li>
+      <li>TRUE</li>
+    </condition> 
+  </template>
+</category>
 
 
- <!-- repite n esto dentro de un srai -->
 
- <category>
-   <pattern>REPITE <set>number</set> * </pattern>
-   <template>
-     <think>
-     
-	<set var="contador">0</set>
-	<set var="repeticiones"><star index="1"/></set>
-	<set var="salida"><star index="2"/></set>
-	
-     </think>
-	<condition var="contador">
-	  <li><value><get var="repeticiones"/></value><get var="salida"/></li>
-	  <li>
-	    <think>
-	    <set var="contador">
-	      <map name="successor"><get var="contador"/></map>
-	    </set>
 
-	    <set var="salida">
-	      <srai> <star index="2"/> </srai>
-	    </set>
-	    <star index="2"/>
-	    <srai> <star index="2"/> </srai>
-	    </think>
-	    <loop/>
-	  </li>
-	  
+
+<!-- Dada una fecha  y SUS CINCO DÍAS SIGUIENTES
+     - FALSE si tods los dias están ocupados
+     - <lista con los días libres en formato >
+-->
+
+<category>
+  <pattern>SEMANA LIBRE * POR LA * HASTA * </pattern>
+  <template>
+
+    <think>
+    <set var="turno"><star index="2"/></set>
+     <set var="turno">
+       <condition var="turno">
+	 <li value="manana">DE  08:00 A 13:00</li>
+	 <li value="tarde">DE  14:00 A 20:00</li>
+	 <li>DE 08:00 A 20:00</li>
+       </condition>
+     </set>
+    
+    <set var="dia"><star index="1"/></set>
+    <set name="DIAS_LIBRES"></set>
+    <set var="cnt">0</set>
+    <set var="hueco">FALSE</set>
+
+    <set var="dias_hasta_viernes"><star index="3"/></set>
+
+    </think>	
+    <condition var="cnt">
+      <li><value><get var="dias_hasta_viernes"/></value>
+	<condition var="hueco">
+	  <li value="TRUE"> <get name="DIAS_LIBRES"/></li>
+	  <li>FALSE</li>
 	</condition>
-	  
-    </template>
-  </category>
- 
+     
+      </li>
+      <li>
+	<think>
+	  <set var="bool_horas_libres">
+	    <srai>HORAS TRABAJO2 <get var="dia"/> <get var="turno"/></srai>
+	  </set>
+	
+	  <condition var="bool_horas_libres">
+	    <li value="TRUE">
+	      <set name="DIAS_LIBRES"> <get name="DIAS_LIBRES"/> <get var="dia"/></set>
+	      <set var="hueco">TRUE</set>	    
+	    </li>
+	  </condition>
 
- 
- 
+	  <set var="dia"><srai>TOMORROWDATE <get var="dia"/> </srai></set>	
+	  <set var="cnt"><srai>SUCCESSOR <get var="cnt"/></srai></set>
+	</think>
+	<loop/>
+      </li>
+    </condition>
+  </template>
+</category>
+
+
+</aiml>

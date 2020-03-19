@@ -370,8 +370,15 @@ funcionCITA dd-mm-yy [manana tarde dia]
       <category>
 	<pattern> ^ NO ^ </pattern>
 	<template>
-	  Disculpe por no haber podido ofrecerle lo que deseaba. 
-	  <think><srai> <set name="topic">null</set></srai></think>
+	  <condition name="INDECISION">
+	    
+	    <li value="TRUE"> <srai>NO QUIERE ESTA SEMANA</srai>
+	    </li>
+	    <li>
+	      Disculpe por no haber podido ofrecerle lo que deseaba. 
+	      <think><srai> <set name="topic">null</set></srai></think>
+	    </li>
+	  </condition>
 	</template>
       </category>
 
@@ -379,19 +386,25 @@ funcionCITA dd-mm-yy [manana tarde dia]
 
       <!-- Se responde que sí a lo de cambiar el día  -->
       <category>
-	<pattern> si ^ </pattern>
+	<pattern> ^ <set>respuesta_afirmativa</set> ^ </pattern>
 	<template>
-	 <srai> CITA <star/></srai> 
+	  <condition name="INDECISION">
+	    <li value="TRUE"> <srai>RESPONDE INDECISION</srai>
+	    <think><set name="INDECISION">FALSE</set></think></li>
+	    <li> <srai> CITA <star/></srai> </li>
+	  </condition>
+
 	</template>
       </category>
 
+      <!--
       <category>
 	<pattern> si </pattern>
 	<template>
 	 aja, pues estaria muy bien que me la dijeras
 	</template>
       </category>
-      
+      -->
 
       <!-- Se propone  otra fecha  -->
       <category>
