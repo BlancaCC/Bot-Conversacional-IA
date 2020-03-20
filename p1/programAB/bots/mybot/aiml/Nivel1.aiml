@@ -364,7 +364,20 @@ funcionCITA dd-mm-yy [manana tarde dia]
       
       
 
-    <!-- SEGUNDO ESTADO otro día -->
+      <!-- SEGUNDO ESTADO otro día -->
+       <category>
+	<pattern> ^ NO ^ [CLARO SE] ^  </pattern>
+	<template>
+	  <srai>INDECISION</srai>
+	</template>
+       </category>
+
+          <category>
+	<pattern> ^ indeci+ ^  </pattern>
+	<template>
+	  <srai>INDECISION</srai>
+	</template>
+      </category>
 
       <!-- No quiere otro día, así que cortamos -->
       <category>
@@ -386,10 +399,10 @@ funcionCITA dd-mm-yy [manana tarde dia]
 
       <!-- Se responde que sí a lo de cambiar el día  -->
       <category>
-	<pattern> ^ <set>respuesta_afirmativa</set> ^ </pattern>
+	<pattern> ^ [si vale ok venga dale] ^ </pattern>
 	<template>
 	  <condition name="INDECISION">
-	    <li value="TRUE"> <srai>RESPONDE INDECISION</srai>
+	    <li value="TRUE"> <srai>RESPONDE INDECISION <star index="1"/><star index="2"/></srai>
 	    <think><set name="INDECISION">FALSE</set></think></li>
 	    <li> <srai> CITA <star/></srai> </li>
 	  </condition>

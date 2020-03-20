@@ -27,8 +27,8 @@
   <topic name="SEGUNDO_ESTADO">
 	
     <category>
-      <pattern> indecision </pattern>
-      <template>Quiere para esta semana
+      <pattern> INDECISION </pattern>
+      <template>¿Quiere para esta semana?
       <think>
 	<set name="INDECISION">TRUE</set>
 	<set name="DIAS_ACUMULADOS">0</set>
@@ -41,6 +41,7 @@
       <pattern> NO QUIERE ESTA SEMANA </pattern>
       <template>¿Quiere para la siguiente?
       <think>
+	<set name="INDECISION">TRUE</set>
 	<set name="DIAS_ACUMULADOS">
 	  <srai>SUMA 7 <get name="DIAS_ACUMULADOS"/></srai>
 	</set>
@@ -68,7 +69,7 @@
 
 	<set var="TURNO">
 	  <srai> SACA TURNO 
-	  <srai>SACA TURNO AUX <star/> </srai>
+	  <srai>SACA TURNO AUX por <star/> </srai>
 	  </srai>
 	</set>
 
@@ -76,9 +77,11 @@
 	  <srai>SEMANA LIBRE  <get var="dia"/> POR LA <get var="TURNO"/> HASTA <get var="fecha_tope"/></srai>
 	</set>
 	</think>
+
+	El turno es <get var="TURNO"/>
 	<condition var="resultado">
 	  <li value="FALSE"> Lo siento no hay dias libres para esta semana.
-	  Preguntar la siguiente semana
+	  <srai>NO QUIERE ESTA SEMANA</srai>
 	  </li>
 	  <li>
 	    Lo dias que tengo disponible son <get var="resultado"/>
