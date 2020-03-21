@@ -77,9 +77,7 @@
 	  <srai>SEMANA LIBRE  <get var="dia"/> POR LA <get var="TURNO"/> HASTA <get var="fecha_tope"/></srai>
 	</set>
 	</think>
-
-	El turno es <get var="TURNO"/>
-	<condition var="resultado">
+	<condition var="resultad>o">
 	  <li value="FALSE"> Lo siento no hay dias libres para esta semana.
 	  <srai>NO QUIERE ESTA SEMANA</srai>
 	  </li>

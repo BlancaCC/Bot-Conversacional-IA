@@ -45,7 +45,8 @@ funcionCITA dd-mm-yy [manana tarde dia]
 
   </think>
   <condition var="pos">
-    <li value="0"> Pues esta todo acupado, lo siento. ¿Desea otro dia? 
+    <li value="0">NULL
+     <!-- Pues esta todo acupado, lo siento. ¿Desea otro dia? -->
     <think>
       <set name="topic">SEGUNDO_ESTADO</set>
       <!-- <set name="HAY_HORAS">false</set> -->
@@ -189,25 +190,33 @@ funcionCITA dd-mm-yy [manana tarde dia]
       Turno: <get var="TURNO"/>
       Hora: <get var="HORA"/>
       
-       </think>
+      </think>
+      <!-- Resolución fecha concreta -->
       <condition var="FECHA">
 	<li value="NULL">
 	  <srai>PREGUNTAR CUANDO QUIERE CITA</srai>
 	  <think><set name="topic">SEGUNDO_ESTADO</set></think>
 	</li>
 	<li>
-	  <condition var="HORA">
-	    <li value="NULL">
-              <srai>FUNCIONCITA <get var="FECHA"/> <get var="TURNO"/></srai>
-	    </li>
+	  <!-- Disponibilidad de la fecha -->
+	  <think>
+	  <set var="respuesta_funcioncita">
+	    <srai>FUNCIONCITA <get var="FECHA"/> <get var="TURNO"/></srai>
+	  </set>
+	  </think>
+	  <condition var="respuesta_funcioncita">
+	    <li value="NULL"> Pues esta todo acupado, lo siento. ¿Desea otro dia?</li>
 	    <li>
-	      <srai>FUNCIONCITA <get var="FECHA"/> <get var="TURNO"/></srai>
-	      <srai>HORA <get var="HORA"/></srai>
+	      <!-- Resolución si se ha pedido hora concreta-->
+	      <condition var="HORA">
+		<li value="NULL"><get var="respuesta_funcioncita"/></li>
+		<li><srai>HORA <get var="HORA"/></srai></li>
+	      </condition>
 	    </li>
 	  </condition>
 	</li>
       </condition>
-  </template>
+    </template>
   </category>
 
   <!-- Descomposición del mensaje -->
@@ -402,8 +411,10 @@ funcionCITA dd-mm-yy [manana tarde dia]
 	<pattern> ^ [si vale ok venga dale] ^ </pattern>
 	<template>
 	  <condition name="INDECISION">
-	    <li value="TRUE"> <srai>RESPONDE INDECISION <star index="1"/><star index="2"/></srai>
-	    <think><set name="INDECISION">FALSE</set></think></li>
+	    <li value="TRUE">
+	      <think><set name="INDECISION">FALSE</set></think>
+	      <srai>RESPONDE INDECISION <star index="1"/><star index="2"/></srai>
+	    </li>
 	    <li> <srai> CITA <star/></srai> </li>
 	  </condition>
 
