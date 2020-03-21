@@ -36,7 +36,7 @@
     </template>
     </category>
 
-    <!-- Funcion para acupular día de la semana -->
+    <!-- Funcion para calcular día de la semana -->
     <category>
       <pattern> NO QUIERE ESTA SEMANA </pattern>
       <template>¿Quiere para la siguiente?
@@ -61,6 +61,7 @@
 	    <set var="fecha_tope"> <srai> DAYS UNTIL VIERNES </srai></set>
 	  </li>
 	  <li>
+	    <set var ="DIAS_ACUMULADOS_bk"><get name ="DIAS_ACUMULADOS"/></set>
 	    <set name ="DIAS_ACUMULADOS"><srai><get name ="DIAS_ACUMULADOS"/>  - <srai> 6 -  <srai> DAYS UNTIL DOMINGO </srai></srai></srai> </set>
 	    <set var="dia"><srai> FECHA ACUMULADA </srai></set>
 	    <set var="fecha_tope">5</set>
@@ -77,8 +78,9 @@
 	  <srai>SEMANA LIBRE  <get var="dia"/> POR LA <get var="TURNO"/> HASTA <get var="fecha_tope"/></srai>
 	</set>
 	</think>
-	<condition var="resultad>o">
+	<condition var="resultado">
 	  <li value="FALSE"> Lo siento no hay dias libres para esta semana.
+	  <think><set name ="DIAS_ACUMULADOS"><get var ="DIAS_ACUMULADOS_bk"/></set></think>
 	  <srai>NO QUIERE ESTA SEMANA</srai>
 	  </li>
 	  <li>
