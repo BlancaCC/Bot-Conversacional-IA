@@ -15,7 +15,7 @@
   <!-- Preguntas derivadas -->
 
   <category> 
-<pattern> ^ [habl+ cuent+ di+ expli+] ^ [ti tuyo usted] ^ </pattern>
+<pattern> ^ [habl+ cuent+ di+ expli+ cont+] ^ [ti tuyo usted] ^ </pattern>
 <template> <srai>HABLAME UN POCO DE TI </srai></template>
 </category>
 
@@ -59,7 +59,7 @@
     </think>
 
       <condition var="contador">
-	<li> <value><star/></value><get var="contador"/>: <map name="Nivel0Virtudes"><get var="contador"/></map></li>
+	<li> <value><star/></value><map name="Nivel0Virtudes"><get var="contador"/></map></li>
 	<li> <value>6</value><get var="contador"/>: <map name="Nivel0Virtudes"><get var="contador"/></map>
 	Y bueno el resto lo seguira viendo si me contrata, que tampoco es plan de tirarme horas hablando de lo perfecto que soy como bot
 	</li>
@@ -86,7 +86,7 @@
   </category>
 
   <category> 
-    <pattern>([tien+ di+ ]) ^ virtud ^</pattern>
+    <pattern>([tien+ di+ ]) ^ virtud+ ^</pattern>
     <template>
       Pues la primera que me viene a la cabeza es que 
       <srai>CUALES SON TUS MAYORES 1 VIRTUDES</srai>
@@ -148,14 +148,5 @@
 
   <!-- ________________________________________________________ -->
 
-<!-- 
-
-<!- ->
-<category> 
-<pattern>  </pattern>
-<template><srai> </srai> </template>
-</category>
-
--->
 
 </aiml>
